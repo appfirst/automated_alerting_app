@@ -4,7 +4,7 @@
 /tmp
 /vendor
 /db
-
+/config/environments
 
 #FOLLOWING GLOBAL GITIGNORE
 

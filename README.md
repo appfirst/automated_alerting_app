@@ -11,6 +11,7 @@ Working on: d3.js topographic visualization of server location. Graphs, graphs, 
 	/db
 	*.json
 	*.yml
+	config/environments
 
 Note: Front page up and running. Using Bootstrap so everything doesn't look so clunky.
 
