@@ -58,5 +58,10 @@ module App
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    config.user_name = "admin@appfirst.com"
+
+    config.api_key = "586854651"
+
   end
 end

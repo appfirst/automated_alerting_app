@@ -42,7 +42,6 @@ function apiCall(){
         return "translate(" + d.x + "," + d.y + ")"; 
       });
 
-
       node.append("title")
       .text(function(d) { return d.className + ": " + format(d.value); });
 
@@ -82,3 +81,40 @@ function apiCall(){
   });
 }
 
+function apiCall2(){
+  var data = [];
+  var req = $.ajax({
+    url: '/call',
+    type: 'post',
+    data: 'url=' + "https://wwws.appfirst.com/api/servers/",
+    success: function(response){
+      data = response;
+    }
+  });
+
+  $.when(req).done(function(){
+
+    var width = 960;
+    var height = 1160;
+
+    var projection = d3.geo.albers()
+    .center([0, 55.4])
+    .rotate([4.4, 0])
+    .parallels([50, 60])
+    .scale(1)
+    .translate([width / 2, height / 2]);
+
+    var path = d3.geo.path()
+    .projection(projection);
+
+    var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+    d3.json("us.json", function(error, us) {
+      svg.append("path")
+      .datum(topojson.feature(us, us.objects.subunits))
+      .attr("d", path);
+    });
+  });
+}

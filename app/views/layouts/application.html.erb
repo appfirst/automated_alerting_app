@@ -5,6 +5,8 @@
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
 
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+
   </head>
   <body>
 
@@ -18,6 +20,9 @@
 
           <p>
             <a href="#"><button class="btn btn-info" type="button" onclick="apiCall();">Servers by Capacity</button></a>
+
+            <a href="#"><button class="btn btn-info" type="button" onclick="apiCall2();">Testing <button></a>
+
           </p>
 
         </div>
