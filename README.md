@@ -6,9 +6,9 @@ First visualization using d3.js. "Bubbles" created based on server's "capacity_m
 
 Second visualization: Attempt to create a topographic map with server locations. Abandoned.
 
-Third visualization: Graph of "cpu" attribute of server 6858 for the past three hours. Beginnging of app idea. Graph currently is static, except fot "tooltips" that display data on rollover.
+Third visualization: Graph of "cpu" attribute of server 6858 for the past three hours. Beginning of app idea. Graph currently is static, except for "tooltips" that display data on rollover.
 
-App idea: System that can recongize outlying points in data and alert the user when outlying data recoours multiple times. This would apply to graphs of most of the data that AppFirst brings in- which makes it relativly daunting. 
+App idea: System that can recongize outlying points in data and alert the user when outlying data reoccurs multiple times. This would apply to graphs of most of the data that AppFirst brings in- which makes it relativly daunting. 
 
 <ol>
 	<li> Create graph template </li>
@@ -28,7 +28,7 @@ Working on: d3.js topographic visualization of server location. Graphs, graphs, 
 	<li> *.yml </li>
 	<li> config/environments </li>
 	</ul>
-	
+
 Note: Front page up and running. Using Bootstrap so everything doesn't look so clunky.
 
 Note: No database setup
