@@ -14,8 +14,54 @@
 
 text{
 	font: 10px sans-serif;
-	fill: #fff
+	fill: #fff;
+}
+
+div.tooltip{
+	position: absolute;
+	z-index: 10;
+	background: lightsteelblue;
+	text-align: center;
+	width: 80px;
+	height: 80 px;
+	padding: 2px;
+	font: 12px sans-serif;
+	border: 0px;
+	border-radius: 8px;
+}
+
+svg{
+	margin-left: 20px;
 }
 
 span10{
 	text-align: center;}
+
+path {
+	fill: none;
+	stroke: steelblue;
+	stroke-width: 3;
+}
+
+circle {
+	fill: white;
+	stroke: steelblue;
+	stroke-width: 2;
+}
+
+circle:hover{
+	fill:steelblue;
+}
+
+.axis path,
+.axis line{
+	fill: none;
+	stroke: grey;
+	stroke-width: 3;
+	shape-rendering: crispEdges;
+}
+
+.axis tick major line{
+	fill: black;
+	stroke: black;
+}
