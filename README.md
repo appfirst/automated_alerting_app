@@ -14,7 +14,7 @@ App idea: System that can recongize outlying points in data and alert the user w
 	<li> Create graph template </li>
 	<li> Create algorithms that will recognize outlying points (over 24 hour period?) </li>
 	<li> Test algorithms on first graph. </li>
-	<li> Figure out way to intercept data? Does not seem efficient to be making so many API calls at once. </li>
+	<li> Figure out way to intercept data? Does not seem efficient to be making so many API calls at once. (Maybe websockets? Not sure if AppFirst supports this)</li>
 	<li> To be continued/implementation. </li>
 </ol>
 

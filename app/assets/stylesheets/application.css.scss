@@ -31,7 +31,8 @@ div.tooltip{
 }
 
 svg{
-	margin-left: 20px;
+	margin-left: 50px;
+	margin-bottom: 50px;
 }
 
 span10{
@@ -56,12 +57,6 @@ circle:hover{
 .axis path,
 .axis line{
 	fill: none;
-	stroke: grey;
-	stroke-width: 3;
-	shape-rendering: crispEdges;
-}
-
-.axis tick major line{
-	fill: black;
 	stroke: black;
+	stroke-width: 3;
 }

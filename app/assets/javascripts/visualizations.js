@@ -1,16 +1,26 @@
-function vis1(){
+function request(url){
+  var spin = new Spinner().spin();
+  document.getElementById("1").appendChild(spin.el).setAttribute("align", "center");
 
-  var data = [];
   var req = $.ajax({
     url: '/call',
     type: 'post',
-    data: 'url=' + "https://wwws.appfirst.com/api/servers/",
-    success: function(response){
-      data = response;
+    data: 'url=' + url,
+    success: function(data){
+      spin.stop();
+      if(url == "https://wwws.appfirst.com/api/servers/6858/data/?num=180")
+        vis3(data);
+      else if(url == "https://wwws.appfirst.com/api/servers/")
+        vis1(data);
     }
   });
 
-  $.when(req).done(function(){
+}
+
+function vis1(response){
+
+  var data = [];
+  data = response;
 
     var diameter = 700,
     format = d3.format(",d"),
@@ -41,7 +51,8 @@ function vis1(){
       //Creates the circles and places them in the DOM
       node.append("circle")
       .attr("r", function(d){ return d.r; })
-      .style("fill", function(d){ return "rgb(0," + Math.round(d.r*2) + ",0)"; });
+      .style("fill", function(d){ return "rgb(0," + Math.round(d.r*2) + ",0)"; })
+      .style("stroke", "darkgreen");
 
       node.append("text")
       .attr("dy", ".3em")
@@ -65,7 +76,7 @@ function vis1(){
     }
     return {children: classes};
   }
-  });
+
 }
 
 function vis2(){
@@ -106,96 +117,79 @@ function vis2(){
   });
 }
 
-function vis3(){
-  var data = []
-  var req = $.ajax({
-    url: '/call',
-    type: 'post',
-    data: 'url=' + "https://wwws.appfirst.com/api/servers/6858/data/?num=180",
-    success: function(response){
-      data = response;
-    }
-  });
+function vis3(response){
 
-  $.when(req).done(function(){
-    var height = 300;
-    var width = 1500;
+  var data = [];
+  data = response;
 
-    var svg = d3.select("body").append("svg")
+  var height = 300;
+  var width = 1500;
+
+  var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
-    var xscale = d3.scale.linear()
+
+  var xscale = d3.scale.linear()
     .domain([data[0].time, data[data.length - 1].time])
     .range([0, width]);
 
-    var yscale = d3.scale.linear()
+  var yscale = d3.scale.linear()
     .domain([17,55])
-    .range([0, height]);
+    .range([0, height])
 
-    var xaxis = d3.svg.axis()
-    .orient("bottom")
+  var xaxis = d3.svg.axis()
+    .orient("top")
     .scale(xscale)
     .ticks(5)
+    .tickSize(12);
 
-    var yaxis = d3.svg.axis()
+  var yaxis = d3.svg.axis()
     .scale(yscale)
-    .orient("left")
+    .orient("right")
     .ticks(5)
+    .tickSize(12);
 
-    var line = d3.svg.line()
+  var line = d3.svg.line()
     .x(function(d){return xscale(d.time)})
     .y(function(d){return height - yscale(d.cpu)})
 
-    var tooltip = d3.select("body")
+  var tooltip = d3.select("body")
     .append("div")
-    .text("whale")
     .attr("class", "tooltip")
     .style("opacity", -1);
 
-    d3.json("", function(error, json){
+  var path = svg.append("path")
+    .attr("d", line(data));
 
-      svg.append("path")
-      .attr("d", line(data));
-
-      var node = svg.selectAll('node')
-      .data(data)
-      .enter()
-      .append("circle")
-      .attr("cx", function(d){return xscale(d.time)})
-      .attr("cy", function(d){return height - yscale(d.cpu)})
-      .attr("r", 4)
-      .on("mouseover", function(d){ 
-        tooltip.text("cpu: " + d.cpu)
-        .transition()
-        .duration(500)
-        .style("opacity", 1)
-        .style("left", (d3.event.pageX - 90) + "px")
-        .style("top", (d3.event.pageY - 20) + "px");
-      })
-      .on("mouseout", function(d){
-        tooltip.transition()
+  var node = svg.selectAll('node')
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("cx", function(d){return xscale(d.time)})
+    .attr("cy", function(d){return height - yscale(d.cpu)})
+    .attr("r", 4)
+    .on("mouseover", function(d){ 
+      tooltip.text("cpu: " + d.cpu)
+      .transition()
+      .duration(500)
+      .style("opacity", 1)
+      .style("left", (d3.event.pageX - 90) + "px")
+      .style("top", (d3.event.pageY - 20) + "px");
+    })
+    .on("mouseout", function(d){
+      tooltip.transition()
         .duration(200)
         .style("opacity", -1);
-      });
-
-      svg.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xaxis);
-
-      svg.append("g")
-      .attr("class", "axis")
-      .call(yaxis);
-
-      console.log(data);
     });
-  });
+
+  svg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xaxis);
+
+  svg.append("g")
+    .attr("class", "axis")
+    .call(yaxis);
+
 }
-
-
-
-
-
-
-
