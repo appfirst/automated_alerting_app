@@ -21,13 +21,14 @@ App idea: System that can recongize outlying points in data and alert the user w
 Working on: d3.js topographic visualization of server location. Graphs, graphs, graphs.
 
 .gitignore includes:
-	<blockquote>
+	<ul>
 	<li> /tmp </li>
 	<li> /db </li>
 	<li> *.json </li>
 	<li> *.yml </li>
 	<li> config/environments </li>
-	</blockquote>
+	</ul>
+	
 Note: Front page up and running. Using Bootstrap so everything doesn't look so clunky.
 
 Note: No database setup
