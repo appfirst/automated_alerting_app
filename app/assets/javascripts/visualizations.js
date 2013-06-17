@@ -7,8 +7,9 @@ function request(url, num){
     type: 'GET',
     data: 'url=' + url,
     success: function(data){
-      if(url.indexOf('https://wwws.appfirst.com/api/servers/245378/data/')!==-1)
-        vis3(data);
+      if(url.indexOf('https://wwws.appfirst.com/api/servers/245850/data/')!==-1){
+        console.log(data);
+        vis3(data);}
       else if(url == "https://wwws.appfirst.com/api/servers/" && num == 1)
         vis1(data);
       else if(url == "https://wwws.appfirst.com/api/servers/" && num == 2)

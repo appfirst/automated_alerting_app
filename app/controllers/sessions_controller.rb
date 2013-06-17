@@ -2,8 +2,6 @@ class SessionsController < ApplicationController
   require "base64"
   require "json"
   require "httparty"
-  require 'multi-json'
-
 
   # GET /sessions
   # GET /sessions.json
@@ -14,21 +12,6 @@ class SessionsController < ApplicationController
       format.html # index.html.erb
       format.json { render json: @sessions }
     end
-  end
-
-  def isolate_data(data)
-    MultiJson.decode(data)
-
-    print data
-    puts "whale"
-
-    :render => data
-    logger.debug(data)
-    logger.info "blah"
-  end
-
-  def last_hour_average(data)
-
   end
 
   def call
