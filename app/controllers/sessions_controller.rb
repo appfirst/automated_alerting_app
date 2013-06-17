@@ -2,6 +2,8 @@ class SessionsController < ApplicationController
   require "base64"
   require "json"
   require "httparty"
+  require 'multi-json'
+
 
   # GET /sessions
   # GET /sessions.json
@@ -14,6 +16,20 @@ class SessionsController < ApplicationController
     end
   end
 
+  def isolate_data(data)
+    MultiJson.decode(data)
+
+    print data
+    puts "whale"
+
+    :render => data
+    logger.debug(data)
+    logger.info "blah"
+  end
+
+  def last_hour_average(data)
+
+  end
 
   def call
     #note: problem was because I was not using ssl
@@ -22,7 +38,7 @@ class SessionsController < ApplicationController
 
     response = HTTParty.get(params[:url], 
       :basic_auth => auth,
-      :headers => { 'ContentType' => 'application/json' })
+      :headers => {'Content-Type' => 'application/json'})
 
     render :json => response
   end
