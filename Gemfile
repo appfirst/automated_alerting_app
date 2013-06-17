@@ -14,6 +14,8 @@ gem "httparty", "~> 0.11.0"
 # Gems used only for assets and not required
 # in production environments by default.
 
+gem "multi_json", "~> 1.7.7"
+
 group :assets do
   gem 'coffee-rails', '~> 3.2.1'
 
