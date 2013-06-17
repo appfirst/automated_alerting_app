@@ -1,46 +1,86 @@
 <!DOCTYPE html>
-  <head>
-    <title>App</title>
+  <head><title>App</title>
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
 
     <script src="http://d3js.org/topojson.v1.min.js"></script>
-
   </head>
   <body>
 
-    <h1 class = "text-center" class="text-info"> AppFirst Data Visualization </h1>
-
-    <div class="container-fluid" id="1">
+    <h1 class = "text-center" class="text-info">AppFirst Data Visualization</h1>
+    <div class="container-fluid">
       <div class="row-fluid">
         <div class="span2">
 
+          <div id="spinner"></div>
           <br><br>
+          <p id="body">
 
-          <p>
-            <a href="#"><button class="btn btn-info" type="button" onclick="request('https://wwws.appfirst.com/api/servers/');">Visualization 1</button></a>
+            <script type='text/javascript'>
+            request('https://wwws.appfirst.com/api/servers/245378/data/?num=180',0)
+            </script>
+
+<!--             <a href="#"><button class="btn btn-info" type="button" onclick="request('https://wwws.appfirst.com/api/servers/',1);">Visualization 1</button></a>
 
             <br>
 
-            <a href="#"><button class="btn btn-info" type="button" onclick="vis2();">Visualization 2<button></a>
+            <a href="#"><button class="btn btn-info" type="button" onclick="request('https://wwws.appfirst.com/api/servers/',2);">Visualization 2</button></a>
 
             <br><br>
 
-            <a href="#"><button class="btn btn-info" type="button" onclick="request('https://wwws.appfirst.com/api/servers/6858/data/?num=180');">Visualization 3<button></a>
+            <a href="#"><button class="btn btn-info" type="button" onclick="request('https://wwws.appfirst.com/api/servers/245850/data/?num=180',0);">Visualization 3 (3hr) </button></a>
+
+            <br><br>
+
+            <a href="#"><button class="btn btn-info" type="button" onclick="request('https://wwws.appfirst.com/api/servers/245850/data/?num=1440',0);">Visualization 3 (24hr)</button></a>
+ -->
+            <div class="btn-group">
+              <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Servers</a>
+              <ul class="dropdown-menu">
+                <script type="text/javascript"> 
+
+                var req = $.ajax({
+                  url: '/call',
+                  type: 'GET',
+                  data: 'url=https://wwws.appfirst.com/api/servers/',
+                  success: function(data){
+                    for(var i=0; i<data.length;i++){
+                      var obj = data[i];
+
+                      for(var key in obj){
+                        var name;
+                        if(key == "nickname")
+                          name = obj[key];
+                        if(key=="id"){
+                          var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(" + "'https://wwws.appfirst.com/api/servers/" + obj[key] + "/data/?num=180'" + " ,0);'>" + name + "</a></li>"
+                          console.log(test);
+                          $('ul').append(test);
+                        }
+                      }
+                    }
+                  }
+                });
+
+                </script>
+              </ul>
+
+            </div>
+
+            <div style="height:120px;width:1400px;border:2px solid #ccc; overflow:auto; position:fixed; top:80%; left: 6%;">
+              Location for any data alerts
+            </div>
 
           </p>
+          <div class="text-align:center">
 
-        </div>
-        <div class="text-align:center">
+            <p id="p1"> </p>
 
-          <p id="p1"> </p>
-
+          </div>
         </div>
       </div>
-    </div>
 
-    <%= yield %>
+      <%= yield %>
 
   </body>
 </html>

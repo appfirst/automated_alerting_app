@@ -1,20 +1,24 @@
-function request(url){
+function request(url, num){
   var spin = new Spinner().spin();
-  document.getElementById("1").appendChild(spin.el).setAttribute("align", "center");
+  document.getElementById("spinner").appendChild(spin.el);
 
   var req = $.ajax({
     url: '/call',
-    type: 'post',
+    type: 'GET',
     data: 'url=' + url,
     success: function(data){
-      spin.stop();
-      if(url == "https://wwws.appfirst.com/api/servers/6858/data/?num=180")
+      if(url.indexOf('https://wwws.appfirst.com/api/servers/245378/data/')!==-1)
         vis3(data);
-      else if(url == "https://wwws.appfirst.com/api/servers/")
+      else if(url == "https://wwws.appfirst.com/api/servers/" && num == 1)
         vis1(data);
+      else if(url == "https://wwws.appfirst.com/api/servers/" && num == 2)
+        vis2(data);
+      spin.stop();
+    },
+    error: function(){
+      spin.stop();
     }
   });
-
 }
 
 function vis1(response){
@@ -22,22 +26,22 @@ function vis1(response){
   var data = [];
   data = response;
 
-    var diameter = 700,
+  var diameter = 700,
     format = d3.format(",d"),
     color = d3.scale.category20c();
 
-    var bubble = d3.layout.pack()
+  var bubble = d3.layout.pack()
     .sort(null)
     .size([diameter, diameter])
     .padding(1.5);
 
-    var svg = d3.select("body").append("svg")
+  var svg = d3.select("body").append("svg")
     .attr("width", diameter)
     .attr("height", diameter)
     .attr("class", "bubble");
 
-    d3.json("", function(error, root){ //Method waits for Json to return before excuting visulaization code
-      var node = svg.selectAll(".node")
+  d3.json("", function(error, root){ //Method waits for Json to return before excuting visulaization code
+    var node = svg.selectAll(".node")
       .data(bubble.nodes(classes(data)) //wily step. Create d.r, d.x and d.y
       .filter(function(d) { return !d.children; }))
       //MUST filter by child node. Otherwise you get one large node.
@@ -46,18 +50,18 @@ function vis1(response){
       .attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")"; });
 
       node.append("title")
-      .text(function(d) { return d.className + ": " + format(d.value); });
+        .text(function(d) { return d.className + ": " + format(d.value); });
 
       //Creates the circles and places them in the DOM
       node.append("circle")
-      .attr("r", function(d){ return d.r; })
-      .style("fill", function(d){ return "rgb(0," + Math.round(d.r*2) + ",0)"; })
-      .style("stroke", "darkgreen");
+        .attr("r", function(d){ return d.r; })
+        .style("fill", function(d){ return "rgb(0," + Math.round(d.r*2) + ",0)"; })
+        .style("stroke", "darkgreen");
 
       node.append("text")
-      .attr("dy", ".3em")
-      .style("text-anchor", "middle")
-      .text(function(d) { return d.className.substring(0, d.r / 3); }); 
+        .attr("dy", ".3em")
+        .style("text-anchor", "middle")
+        .text(function(d) { return d.className.substring(0, d.r / 3); }); 
     });
   
     //Returns flattened data
@@ -76,73 +80,63 @@ function vis1(response){
     }
     return {children: classes};
   }
-
 }
 
-function vis2(){
+function vis2(response){
   var data = [];
-  var req = $.ajax({
-    url: '/call',
-    type: 'post',
-    data: 'url=' + "https://wwws.appfirst.com/api/servers/",
-    success: function(response){
-      data = response;
-    }
-  });
+  data = response;
+ 
+  var width = 960;
+  var height = 1160;
 
-  $.when(req).done(function(){
-
-    var width = 960;
-    var height = 1160;
-
-    var projection = d3.geo.albers()
+  var projection = d3.geo.albers()
     .center([0, 55.4])
     .rotate([4.4, 0])
     .parallels([50, 60])
     .scale(1)
     .translate([width / 2, height / 2]);
 
-    var path = d3.geo.path()
+  var path = d3.geo.path()
     .projection(projection);
-
-    var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
-
-    d3.json("us.json", function(error, us) {
-      svg.append("path")
-      .datum(topojson.feature(us, us.objects.subunits))
-      .attr("d", path);
-    });
-  });
-}
-
-function vis3(response){
-
-  var data = [];
-  data = response;
-
-  var height = 300;
-  var width = 1500;
 
   var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
 
+  d3.json("us.json", function(error, us) {
+    svg.append("path")
+      .datum(topojson.feature(us, us.objects.subunits))
+      .attr("d", path);
+  });
+}
 
-  var xscale = d3.scale.linear()
-    .domain([data[0].time, data[data.length - 1].time])
+function vis3(response){
+  var data = [];
+  data = response;
+
+  var height = 230;
+  var width = 1300;
+  var margin = 1;
+
+  // var format = d3.time.format("%Y-%m-%d-%H-%M");
+  // date = new Date(data[0].time);
+  // console.log("This is the date" + date);
+
+  var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  var xscale = d3.time.scale()
+    .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])
     .range([0, width]);
 
   var yscale = d3.scale.linear()
-    .domain([17,55])
-    .range([0, height])
+    .domain([d3.min(array("cpu", data)) - margin, d3.max(array("cpu", data)) + margin])
+    .range([height, 0])
 
   var xaxis = d3.svg.axis()
     .orient("top")
-    .scale(xscale)
-    .ticks(5)
-    .tickSize(12);
+    .scale(xscale);
 
   var yaxis = d3.svg.axis()
     .scale(yscale)
@@ -151,37 +145,38 @@ function vis3(response){
     .tickSize(12);
 
   var line = d3.svg.line()
-    .x(function(d){return xscale(d.time)})
-    .y(function(d){return height - yscale(d.cpu)})
+    .x(function(d){return xscale(date(d.time))})
+    .y(function(d){return yscale(d.cpu)})
 
   var tooltip = d3.select("body")
     .append("div")
     .attr("class", "tooltip")
     .style("opacity", -1);
 
-  var path = svg.append("path")
-    .attr("d", line(data));
-
   var node = svg.selectAll('node')
     .data(data)
     .enter()
     .append("circle")
-    .attr("cx", function(d){return xscale(d.time)})
-    .attr("cy", function(d){return height - yscale(d.cpu)})
-    .attr("r", 4)
+    .attr("cx", function(d){return xscale(date(d.time))})
+    .attr("cy", function(d){return yscale(d.cpu)})
+    .attr("r", 7)
     .on("mouseover", function(d){ 
-      tooltip.text("cpu: " + d.cpu)
-      .transition()
-      .duration(500)
-      .style("opacity", 1)
-      .style("left", (d3.event.pageX - 90) + "px")
-      .style("top", (d3.event.pageY - 20) + "px");
+      tooltip.text("cpu: " + d.cpu +"\ndate:" + date(d.time))
+        .transition()
+        .duration(500)
+        .style("opacity", 1)
+        .style("left", (d3.event.pageX - 90) + "px")
+        .style("top", (d3.event.pageY - 20) + "px");
     })
     .on("mouseout", function(d){
       tooltip.transition()
         .duration(200)
         .style("opacity", -1);
     });
+
+
+  var path = svg.append("path")
+    .attr("d", line(data));
 
   svg.append("g")
     .attr("class", "axis")
@@ -191,5 +186,22 @@ function vis3(response){
   svg.append("g")
     .attr("class", "axis")
     .call(yaxis);
+}
 
+function array(attr, data){
+  var result = [];
+  for (var i=0; i<data.length; i++){
+    var obj = data[i];
+    for(var key in obj){
+      if(key == attr)
+       result[i] = obj[key];
+    }
+  }
+  return result;
+}
+
+function date(epochtime){
+  var d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+  d.setUTCSeconds(epochtime);
+  return d;
 }

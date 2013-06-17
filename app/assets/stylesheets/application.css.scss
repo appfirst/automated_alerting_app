@@ -12,6 +12,12 @@
  *= require_tree .
  */
 
+#spinner{
+	position: absolute;
+	margin-left: 750px;
+	margin-top: 75px;
+}
+
 text{
 	font: 10px sans-serif;
 	fill: #fff;
@@ -22,7 +28,7 @@ div.tooltip{
 	z-index: 10;
 	background: lightsteelblue;
 	text-align: center;
-	width: 80px;
+	width: 100px;
 	height: 80 px;
 	padding: 2px;
 	font: 12px sans-serif;
@@ -45,13 +51,15 @@ path {
 }
 
 circle {
-	fill: white;
+	fill: none;
+	opacity:0;
 	stroke: steelblue;
 	stroke-width: 2;
 }
 
 circle:hover{
 	fill:steelblue;
+	opacity:1;
 }
 
 .axis path,
@@ -59,4 +67,8 @@ circle:hover{
 	fill: none;
 	stroke: black;
 	stroke-width: 3;
+}
+.axis text{
+	fill: black;
+	font: 10px sans-serif;
 }
