@@ -119,6 +119,8 @@ function vis3(response){
   var width = 1300;
   var margin = 1;
 
+  var attr = "cpu";
+
   // var format = d3.time.format("%Y-%m-%d-%H-%M");
   // date = new Date(data[0].time);
   // console.log("This is the date" + date);
@@ -132,7 +134,7 @@ function vis3(response){
     .range([0, width]);
 
   var yscale = d3.scale.linear()
-    .domain([d3.min(array("cpu", data)) - margin, d3.max(array("cpu", data)) + margin])
+    .domain([d3.min(array(attr, data)) - margin, d3.max(array(attr, data)) + margin])
     .range([height, 0])
 
   var xaxis = d3.svg.axis()
@@ -162,7 +164,7 @@ function vis3(response){
     .attr("cy", function(d){return yscale(d.cpu)})
     .attr("r", 7)
     .on("mouseover", function(d){ 
-      tooltip.text("cpu: " + d.cpu +"\ndate:" + date(d.time))
+      tooltip.text(attr + ": " + d.cpu +"\n\ndate:" + date(d.time))
         .transition()
         .duration(500)
         .style("opacity", 1)
