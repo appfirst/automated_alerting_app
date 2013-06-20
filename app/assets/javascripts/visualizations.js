@@ -1,4 +1,6 @@
 function request(url, num){
+  console.log("anteater")
+  console.log(url)
   var spin = new Spinner().spin();
   document.getElementById("spinner").appendChild(spin.el);
 
@@ -7,8 +9,9 @@ function request(url, num){
     type: 'GET',
     data: 'url=' + url,
     success: function(data){
-      if(url.indexOf('https://wwws.appfirst.com/api/servers/245850/data/')!==-1){
-        vis3(data);}
+      if(url.indexOf('/data/')!==-1){
+        var array = String(url).split('/')
+        vis3(data, array[5]);}
       else if(url == "https://wwws.appfirst.com/api/servers/" && num == 1)
         vis1(data);
       else if(url == "https://wwws.appfirst.com/api/servers/" && num == 2)
@@ -31,7 +34,6 @@ function place_name(svg, id){
         if(key == "nickname" && svg !=null)
           graph_title(svg, data[key])
         else if (key=="nickname"){
-          console.log(data);
           var notice = "<tr><td>" + data[key] + "</td></tr>";
           $("#table").prepend(notice);
         }
@@ -44,7 +46,6 @@ function place_name(svg, id){
 }
 
 function graph_title(svg, data){
-      console.log(data)
       svg.append("text")
       .attr("x", $('svg').attr("width")/2)             
       .attr("y", $('svg').attr("height")-($('svg').attr("height")- 14))
@@ -144,7 +145,7 @@ function vis2(response){
   });
 }
 
-function vis3(response){
+function vis3(response, id){
   var data = [];
   data = response;
 
@@ -158,11 +159,11 @@ function vis3(response){
   // date = new Date(data[0].time);
   // console.log("This is the date" + date);
 
-  var svg = d3.select("body").append("svg")
+  var svg = d3.select(".svg_container").insert("svg", "svg")
     .attr("width", width)
     .attr("height", height);
 
-  place_name(svg, "245850");
+  place_name(svg, id);
 
   var xscale = d3.time.scale()
     .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])
@@ -201,7 +202,7 @@ function vis3(response){
     .on("mouseover", function(d){ 
       tooltip.text(attr + ": " + d.cpu +"\n\ndate:" + date(d.time))
         .transition()
-        .duration(500)
+        .duration(400)
         .style("opacity", 1)
         .style("left", (d3.event.pageX - 90) + "px")
         .style("top", (d3.event.pageY - 20) + "px");

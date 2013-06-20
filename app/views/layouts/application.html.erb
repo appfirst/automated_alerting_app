@@ -8,13 +8,12 @@
   </head> 
   <body>
 
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <a class="brand" class="text-center" href="#">AppFirst Alerting</a>
         <ul class="nav nav-tabs">
-          <li><a href="#" onclick="const_req();">Test Alerting Request</a></li>
-          <li><a href="#" onclick="get_name(245850);">Test GetName Request</a></li>
+          <li><a href="#" onclick="begin_analysis(245933);">Test Alerting Request</a></li>
+          <li><a href="#" onclick="place_name(245933);">Test GetName Request</a></li>
           <li class = "dropdown">      
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servers</a>
             <ul class="dropdown-menu" id="server_nav">
@@ -34,7 +33,8 @@
                       if(key=="id")
                         var id = obj[key];
                     }
-                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(" + "'https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180'" + " ,0);'>" + name + "</a></li>"
+                    url = "https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180"
+                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(&#39;" + url + "&#39;,0);'>" + name + "</a></li>"
                     console.log(test);
                     $("#server_nav").append(test);
                   }
@@ -48,13 +48,15 @@
     </div>
 
     <div class="spinner" id="spinner">
+    </div>
+
+    <div class="svg_container">
       <script type='text/javascript'>
-        request('https://wwws.appfirst.com/api/servers/245850/data/?num=180',0)
+        request('https://wwws.appfirst.com/api/servers/245933/data/?num=180',0)
       </script>
     </div>
 
-
-    <div class="alert-box">
+    <div class="alert-container">
       <table class = "table table-hover table-bordered">
         <thead>
           <th> Server Name </th>
@@ -66,10 +68,6 @@
           <tr><td>Octopus</td></tr>
           <tr><td>Naked Mole Rat</td></tr>         
           <tr><td>Penguin</td></tr>  
-          <tr><td>Armadillo</td></tr>
-          <tr><td>Whale</td></tr>
-          <tr><td>Octopus</td></tr>
-          <tr><td>Naked Mole Rat</td></tr>
         </tbody>
       </table><!--  End of alert box -->
     </div>

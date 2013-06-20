@@ -44,15 +44,17 @@ text{
 }
 
 .nav-tabs{
+	background-color:#000;
 	border-bottom:none;
 	font-size: 14px;
 	color: #fff;
 	padding-top:8px;
 }
 
-.nav-bar > li > a:hover{
-	background-color:#fff;
-	color:#fff;
+.nav-tabs > li > a:hover{
+	background-color:white;
+	color:white;
+	fill:white;
 	border-color:#000;
 }
 
@@ -60,7 +62,12 @@ text{
 	color:#fff;
 }
 
-.alert-box{
+.navbar .nav > li > a:hover {
+	color:lightsteelblue;
+}
+
+
+.alert-container{
 	height:350px;
 	width:1400px;
 	overflow:auto;
@@ -82,9 +89,19 @@ div.tooltip{
 	border-radius: 8px;
 }
 
-svg{
+.dropdown-menu{
+	height: 600px;
+	overflow:scroll;
+}
+
+.svg_container{
+	fill:black;
 	margin-left: 140px;
-	margin-top: 50px;
+	margin-top: 60px;
+	width:1350px;
+	height:230px;
+	max-height:270px;
+	overflow:hidden;
 }
 
 span10{
