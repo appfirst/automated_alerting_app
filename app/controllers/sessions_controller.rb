@@ -51,12 +51,14 @@ class SessionsController < ApplicationController
     end
   end
 
-  def init
-    data = call2("https://wwws.appfirst.com/api/servers/245111/data/?num=180")
+  def init()
+    logger.debug("porcupine")
+    data = call2("https://wwws.appfirst.com/api/servers/#{params[:id]}/data/?num=180")
     @timeseries = create_timeseries(data, "cpu")
     average(@timeseries)
-    hour_test(@timeseries)
-    grubbs_test(@timeseries)
+    #grubbs test not currently working
+    #grubbs_test(@timeseries) 
+    render :json => hour_test(@timeseries)
   end
 
   def three_minute_average(timeseries)
@@ -85,8 +87,10 @@ class SessionsController < ApplicationController
 
   def hour_test(timeseries)
 
+    # uncomment to create an anomaly for testing purposes
+    # be sure to modify value so that it is anomalous
     len = timeseries.length
-    timeseries[len-1] = 0.5
+    timeseries[len-1] = 5
 
     puts timeseries
 
@@ -95,6 +99,7 @@ class SessionsController < ApplicationController
     tail = three_minute_average(timeseries)
 
     puts (tail-avg).abs > (3 * std)
+    return (tail-avg).abs > (3 * std)
   end
 
 
@@ -102,7 +107,7 @@ class SessionsController < ApplicationController
   def grubbs_test(timeseries)
 
     len = timeseries.length
-    timeseries[len-1] = 0.5
+    timeseries[len-1] = 0
 
     deviation = timeseries.stdev
     avg = average(timeseries)
@@ -119,4 +124,4 @@ class SessionsController < ApplicationController
 
     puts grubbs_stat > score
   end
-end
+end #end of SessionsController

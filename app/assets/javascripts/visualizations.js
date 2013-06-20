@@ -8,7 +8,6 @@ function request(url, num){
     data: 'url=' + url,
     success: function(data){
       if(url.indexOf('https://wwws.appfirst.com/api/servers/245850/data/')!==-1){
-        console.log(data);
         vis3(data);}
       else if(url == "https://wwws.appfirst.com/api/servers/" && num == 1)
         vis1(data);
@@ -20,6 +19,40 @@ function request(url, num){
       spin.stop();
     }
   });
+}
+
+function place_name(svg, id){
+  $.ajax({
+    url: '/call',
+    type: 'GET',
+    data: 'url=https://wwws.appfirst.com/api/servers/' + id,
+    success: function(data){
+      for(var key in data){
+        if(key == "nickname" && svg !=null)
+          graph_title(svg, data[key])
+        else if (key=="nickname"){
+          console.log(data);
+          var notice = "<tr><td>" + data[key] + "</td></tr>";
+          $("#table").prepend(notice);
+        }
+      }
+    },
+    error: function(data){
+      console.log("no server name for that id!");
+    }
+  });
+}
+
+function graph_title(svg, data){
+      console.log(data)
+      svg.append("text")
+      .attr("x", $('svg').attr("width")/2)             
+      .attr("y", $('svg').attr("height")-($('svg').attr("height")- 14))
+      .attr("text-anchor", "middle")  
+      .style("font-size", "18px") 
+      .style("fill", "black")
+      .text(data);
+      return data;
 }
 
 function vis1(response){
@@ -128,6 +161,8 @@ function vis3(response){
   var svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height);
+
+  place_name(svg, "245850");
 
   var xscale = d3.time.scale()
     .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])

@@ -3,6 +3,7 @@ App::Application.routes.draw do
 
   root :to => "sessions#new"
   match "/call" => "sessions#call"
+  match "/init" => "sessions#init"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

@@ -8,8 +8,8 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_self
  *= require_tree .
+ *= require_self
  */
 
 #spinner{
@@ -21,6 +21,52 @@
 text{
 	font: 10px sans-serif;
 	fill: #fff;
+}
+
+.navbar{
+	margin-top:0;
+	padding-top:0;
+}
+
+.navbar-inner{
+	background-color: #000;
+	padding-left:10px;
+	height:60px;
+	background-image:none;
+}
+
+.navbar .brand{
+	color: #fff;
+	font-size: 25px;
+	padding-top: 17px;
+	margin-right: 40px;
+	float: right;
+}
+
+.nav-tabs{
+	border-bottom:none;
+	font-size: 14px;
+	color: #fff;
+	padding-top:8px;
+}
+
+.nav-bar > li > a:hover{
+	background-color:#fff;
+	color:#fff;
+	border-color:#000;
+}
+
+.navbar .nav > li > a {
+	color:#fff;
+}
+
+.alert-box{
+	height:350px;
+	width:1400px;
+	overflow:auto;
+	position:fixed;
+	top:50%;
+	left:6%;
 }
 
 div.tooltip{
@@ -38,7 +84,7 @@ div.tooltip{
 
 svg{
 	margin-left: 140px;
-	margin-bottom: 50px;
+	margin-top: 50px;
 }
 
 span10{
