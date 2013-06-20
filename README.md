@@ -1,6 +1,28 @@
 <h2> AppFirst Internship Summer 2013 -- Alexandra Orth </h2>
 
-Concept (temporary): Rails app that will link to the different data views.
+Semi-automatic AppFirst Alerting
+
+Application that will allow the user to select the server and attributes that they wish to monitor. The application will issue "alerts" (will be entered into a database) when a set of three data points is outside of three standard deviations of the mean. Working on support for other algorithms to increase sensitvity of the checks (the Grubbs test, in particular).
+
+Application's current status:
+<ul>
+	<li> Central graph template with view of current servers' CPU </li>
+	<li> Working with algorithms that compares standad deviation and mean </li>
+	<li> Can select server you wish to monitor </li>
+	<li> Analyses is automated </li>
+</ul>
+
+To be completed
+<ul>
+	<li> Create alert model</li>
+	<li> Store alerts in database so that they will persist across sessions </li>
+	<li> Implement multiple anomaly-recognizing algorithms </li>
+	<li> Automated alerting for selected servers (based on check box in menu)</li>
+	<li> Support for multiple attributes</li>
+</ul>
+
+
+From previous application:
 
 First visualization using d3.js. "Bubbles" created based on server's "capacity_mem" attribute. Colors intensity is also determined using the "capactiy_mem" attribute. 
 
@@ -8,17 +30,6 @@ Second visualization: Attempt to create a topographic map with server locations.
 
 Third visualization: Graph of "cpu" attribute of server 6858 for the past three hours. Beginning of app idea. Graph currently is static, except for "tooltips" that display data on rollover.
 
-App idea: System that can recongize outlying points in data and alert the user when outlying data reoccurs multiple times. This would apply to graphs of most of the data that AppFirst brings in- which makes it relativly daunting. 
-
-<ol>
-	<li> Create graph template </li>
-	<li> Create algorithms that will recognize outlying points (over 24 hour period?) </li>
-	<li> Test algorithms on first graph. </li>
-	<li> Figure out way to intercept data? Does not seem efficient to be making so many API calls at once. (Maybe websockets? Not sure if AppFirst supports this)</li>
-	<li> To be continued/implementation. </li>
-</ol>
-
-Working on: d3.js topographic visualization of server location. Graphs, graphs, graphs.
 
 .gitignore includes:
 	<ul>
@@ -28,7 +39,3 @@ Working on: d3.js topographic visualization of server location. Graphs, graphs, 
 	<li> *.yml </li>
 	<li> config/environments </li>
 	</ul>
-
-Note: Front page up and running. Using Bootstrap so everything doesn't look so clunky.
-
-Note: No database setup
