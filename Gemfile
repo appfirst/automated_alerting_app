@@ -7,6 +7,8 @@ gem 'rails', '3.2.13'
 
 gem 'sqlite3'
 
+gem "mongoid", "~> 3.0.0"
+
 gem 'sass-rails',   '~> 3.2.3'
 gem 'bootstrap-sass', '~> 2.3.1.3'
 
