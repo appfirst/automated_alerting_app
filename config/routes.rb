@@ -4,9 +4,11 @@ AppfirstAlerting::Application.routes.draw do
 
   resources :sessions
 
-  root :to => "sessions#new"
-  match "/call" => "sessions#call"
-  match "/init" => "sessions#init"
+  root :to => "alerts#index"
+  match "/call" => "alerts#call"
+  match "/init" => "alerts#init"
+  match "/new_alert" => "alerts#new"
+
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

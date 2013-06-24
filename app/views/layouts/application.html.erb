@@ -11,10 +11,13 @@
 
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
-        <a class="brand" class="text-center" href="#">AppFirst Alerting</a>
+        <a class="brand" class="text-center" href="#">Automated Alerting</a>
         <ul class="nav nav-tabs">
-          <li><a href="#" onclick="begin_analysis(996);">Test Alerting Request</a></li>
-          <li><a href="#" onclick="place_name(996);">Test GetName Request</a></li>
+          <li><a href="#" onclick="begin_analysis(6324);">Test Alerting Request</a></li>
+          <li><a href="#" onclick="place_name(6324);">Test GetName Request</a></li>
+       
+
+          <!-- Start Server Dropdown Menu-->          
           <li class = "dropdown">      
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servers</a>
             <ul class="dropdown-menu" id="server_nav">
@@ -36,14 +39,38 @@
                     }
                     url = "https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180"
                     var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(&#39;" + url + "&#39;,0);'>" + name + "</a></li>"
-                    console.log(test);
                     $("#server_nav").append(test);
                   }
                 }
               });
               </script>
             </ul> <!-- End Server Dropdown Menu -->
-             </li>
+          </li>
+
+
+          <!--Start Attribute dropdown menu-->          
+          <li class = "dropdown">      
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Attributes</a>
+            <ul class="dropdown-menu" id="attr_nav">
+              <script type="text/javascript"> 
+              var req = $.ajax({
+                url: '/call',
+                type: 'GET',
+                data: 'url=https://wwws.appfirst.com/api/servers/',
+                success: function(data){
+                  for(var key in data[0]){
+                    var test = "<li role='presentation'><a role='menuitem' href='#'>" + key + "</a></li>"
+                    console.log(test);
+                    $("#attr_nav").append(test);
+                  }
+                  
+                }
+              });
+              </script>
+            </ul> <!-- End Server Dropdown Menu -->
+          </li>
+
+
         </ul>
       </div>
     </div>
@@ -53,11 +80,11 @@
 
     <div class="svg_container">
       <script type='text/javascript'>
-        request('https://wwws.appfirst.com/api/servers/996/data/?num=180',0)
+        request('https://wwws.appfirst.com/api/servers/6324/data/?num=180',0)
       </script>
     </div>
 
-    <div class="alert-container">
+<!--     <div class="alert-container">
       <table class = "table table-hover table-bordered">
         <thead>
           <th> Server Name </th>
@@ -70,9 +97,9 @@
           <tr><td>Naked Mole Rat</td></tr>         
           <tr><td>Penguin</td></tr>  
         </tbody>
-      </table><!--  End of alert box -->
+      </table>  
     </div>
-
+ -->
     <%= yield %>
 
   </body>

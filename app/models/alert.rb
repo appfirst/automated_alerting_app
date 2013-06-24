@@ -5,4 +5,6 @@ class Alert
   field :time_stamp, type: String
   field :attr, type: String
   field :reason, type: String
+
+  attr_accessible :server_name, :server_id, :time_stamp, :attr, :reason
 end
