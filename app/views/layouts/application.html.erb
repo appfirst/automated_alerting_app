@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-  <head><title>App</title>
+  <head>
+    <title>AppFirst Alerting</title>
     <%= stylesheet_link_tag "application", :media => "all" %>
     <%= javascript_include_tag "application" %>
     <%= csrf_meta_tags %>
@@ -12,8 +13,8 @@
       <div class="navbar-inner">
         <a class="brand" class="text-center" href="#">AppFirst Alerting</a>
         <ul class="nav nav-tabs">
-          <li><a href="#" onclick="begin_analysis(245933);">Test Alerting Request</a></li>
-          <li><a href="#" onclick="place_name(245933);">Test GetName Request</a></li>
+          <li><a href="#" onclick="begin_analysis(996);">Test Alerting Request</a></li>
+          <li><a href="#" onclick="place_name(996);">Test GetName Request</a></li>
           <li class = "dropdown">      
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servers</a>
             <ul class="dropdown-menu" id="server_nav">
@@ -52,7 +53,7 @@
 
     <div class="svg_container">
       <script type='text/javascript'>
-        request('https://wwws.appfirst.com/api/servers/245933/data/?num=180',0)
+        request('https://wwws.appfirst.com/api/servers/996/data/?num=180',0)
       </script>
     </div>
 

@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Server name:</b>
+  <%= @alert.server_name %>
+</p>
+
+<p>
+  <b>Server:</b>
+  <%= @alert.server_id %>
+</p>
+
+<p>
+  <b>Time stamp:</b>
+  <%= @alert.time_stamp %>
+</p>
+
+<p>
+  <b>Attr:</b>
+  <%= @alert.attr %>
+</p>
+
+<p>
+  <b>Reason:</b>
+  <%= @alert.reason %>
+</p>
+
+
+<%= link_to 'Edit', edit_alert_path(@alert) %> |
+<%= link_to 'Back', alerts_path %>

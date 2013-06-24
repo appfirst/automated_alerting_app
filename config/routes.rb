@@ -1,4 +1,7 @@
-App::Application.routes.draw do
+AppfirstAlerting::Application.routes.draw do
+  resources :alerts
+
+
   resources :sessions
 
   root :to => "sessions#new"

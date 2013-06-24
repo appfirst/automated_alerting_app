@@ -1,3 +1,3 @@
-class Session < ActiveRecord::Base
-
+class Session 
+  include Mongoid::Document
 end
