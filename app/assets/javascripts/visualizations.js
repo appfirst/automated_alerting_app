@@ -1,27 +1,12 @@
-function request(url, num){
-  console.log("anteater")
-  console.log(url)
-  var spin = new Spinner().spin();
-  document.getElementById("spinner").appendChild(spin.el);
+var spin;
 
-  var req = $.ajax({
-    url: '/call',
-    type: 'GET',
-    data: 'url=' + url,
-    success: function(data){
-      if(url.indexOf('/data/')!==-1){
-        var array = String(url).split('/')
-        vis3(data, array[5]);}
-      else if(url == "https://wwws.appfirst.com/api/servers/" && num == 1)
-        vis1(data);
-      else if(url == "https://wwws.appfirst.com/api/servers/" && num == 2)
-        vis2(data);
-      spin.stop();
-    },
-    error: function(){
-      spin.stop();
-    }
-  });
+function start_spin(){
+  spin = new Spinner().spin();
+  document.getElementById("spinner").appendChild(spin.el);
+}
+
+function stop_spin(){
+  spin.stop()
 }
 
 function place_name(svg, id){
@@ -56,175 +41,181 @@ function graph_title(svg, data){
       return data;
 }
 
-function vis1(response){
+function vis1(){
 
-  var data = [];
-  data = response;
+  d3.json("/call?url=https://wwws.appfirst.com/api/servers/", function(error, response){
+    console.log(response)
+    var data = [];
+    data = response;
 
-  var diameter = 700,
-    format = d3.format(",d"),
-    color = d3.scale.category20c();
+    var diameter = 700,
+      format = d3.format(",d"),
+      color = d3.scale.category20c();
 
-  var bubble = d3.layout.pack()
-    .sort(null)
-    .size([diameter, diameter])
-    .padding(1.5);
+    var bubble = d3.layout.pack()
+      .sort(null)
+      .size([diameter, diameter])
+      .padding(1.5);
 
-  var svg = d3.select("body").append("svg")
-    .attr("width", diameter)
-    .attr("height", diameter)
-    .attr("class", "bubble");
+    var svg = d3.select("body").append("svg")
+      .attr("width", diameter)
+      .attr("height", diameter)
+      .attr("class", "bubble");
 
-  d3.json("", function(error, root){ //Method waits for Json to return before excuting visulaization code
-    var node = svg.selectAll(".node")
-      .data(bubble.nodes(classes(data)) //wily step. Create d.r, d.x and d.y
-      .filter(function(d) { return !d.children; }))
-      //MUST filter by child node. Otherwise you get one large node.
-      .enter().append("g")
-      .attr("class", "node")
-      .attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")"; });
+    d3.json("", function(error, root){ //Method waits for Json to return before excuting visulaization code
+      var node = svg.selectAll(".node")
+        .data(bubble.nodes(classes(data)) //wily step. Create d.r, d.x and d.y
+        .filter(function(d) { return !d.children; }))
+        //MUST filter by child node. Otherwise you get one large node.
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")"; });
 
-      node.append("title")
-        .text(function(d) { return d.className + ": " + format(d.value); });
+        node.append("title")
+          .text(function(d) { return d.className + ": " + format(d.value); });
 
-      //Creates the circles and places them in the DOM
-      node.append("circle")
-        .attr("r", function(d){ return d.r; })
-        .style("fill", function(d){ return "rgb(0," + Math.round(d.r*2) + ",0)"; })
-        .style("stroke", "darkgreen");
+        //Creates the circles and places them in the DOM
+        node.append("circle")
+          .attr("r", function(d){ return d.r; })
+          .style("fill", function(d){ return "rgb(0," + Math.round(d.r*2) + ",0)"; })
+          .style("stroke", "darkgreen");
 
-      node.append("text")
-        .attr("dy", ".3em")
-        .style("text-anchor", "middle")
-        .text(function(d) { return d.className.substring(0, d.r / 3); }); 
-    });
-  
-    //Returns flattened data
-    //Extracts nickname of server and memory capacity which are then pushed into an array
-    function classes(root){
-      var classes = [];
-      for(var i=0; i<root.length;i++){
-        var obj = root[i];
-        for(var key in obj){
-          if(key == "nickname")
-          var n = obj[key];
-        if(key == "capacity_mem")
-          var c = obj[key];
+        node.append("text")
+          .attr("dy", ".3em")
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.className.substring(0, d.r / 3); }); 
+      });
+    
+      //Returns flattened data
+      //Extracts nickname of server and memory capacity which are then pushed into an array
+      function classes(root){
+        var classes = [];
+        for(var i=0; i<root.length;i++){
+          var obj = root[i];
+          for(var key in obj){
+            if(key == "nickname")
+            var n = obj[key];
+          if(key == "capacity_mem")
+            var c = obj[key];
+        }
+        classes.push({packageName: name, className: n, value: c});
       }
-      classes.push({packageName: name, className: n, value: c});
+      return {children: classes};
     }
-    return {children: classes};
-  }
+  })
 }
 
 function vis2(response){
-  var data = [];
-  data = response;
- 
-  var width = 960;
-  var height = 1160;
+  d3.json("/call?url=https://wwws.appfirst.com/api/servers/", function(error, response){
+    var data = [];
+    data = response;
+   
+    var width = 960;
+    var height = 1160;
 
-  var projection = d3.geo.albers()
-    .center([0, 55.4])
-    .rotate([4.4, 0])
-    .parallels([50, 60])
-    .scale(1)
-    .translate([width / 2, height / 2]);
+    var projection = d3.geo.albers()
+      .center([0, 55.4])
+      .rotate([4.4, 0])
+      .parallels([50, 60])
+      .scale(1)
+      .translate([width / 2, height / 2]);
 
-  var path = d3.geo.path()
-    .projection(projection);
+    var path = d3.geo.path()
+      .projection(projection);
 
-  var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height);
+    var svg = d3.select("body").append("svg")
+      .attr("width", width)
+      .attr("height", height);
 
-  d3.json("us.json", function(error, us) {
-    svg.append("path")
-      .datum(topojson.feature(us, us.objects.subunits))
-      .attr("d", path);
+    d3.json("us.json", function(error, us) {
+      svg.append("path")
+        .datum(topojson.feature(us, us.objects.subunits))
+        .attr("d", path);
+    });
   });
 }
 
-function vis3(response, id){
-  var data = [];
-  data = response;
+function vis3(id){
+  d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
+    id + "/data/?num=180", function(error, response){
 
-  var height = 230;
-  var width = 1300;
-  var margin = 1;
+      stop_spin();
 
-  var attr = "cpu";
+      var data = [];
+      data = response;
 
-  // var format = d3.time.format("%Y-%m-%d-%H-%M");
-  // date = new Date(data[0].time);
-  // console.log("This is the date" + date);
+      var height = 230;
+      var width = 1300;
+      var margin = 1;
 
-  var svg = d3.select(".svg_container").insert("svg", "svg")
-    .attr("width", width)
-    .attr("height", height);
+      var attr = "cpu";
 
-  place_name(svg, id);
+      var svg = d3.select(".svg_container").insert("svg", "svg")
+        .attr("width", width)
+        .attr("height", height);
 
-  var xscale = d3.time.scale()
-    .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])
-    .range([0, width]);
+      place_name(svg, id);
 
-  var yscale = d3.scale.linear()
-    .domain([d3.min(array(attr, data)) - margin, d3.max(array(attr, data)) + margin])
-    .range([height, 0])
+      var xscale = d3.time.scale()
+        .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])
+        .range([0, width]);
 
-  var xaxis = d3.svg.axis()
-    .orient("top")
-    .scale(xscale);
+      var yscale = d3.scale.linear()
+        .domain([d3.min(array(attr, data)) - margin, d3.max(array(attr, data)) + margin])
+        .range([height, 0])
 
-  var yaxis = d3.svg.axis()
-    .scale(yscale)
-    .orient("right")
-    .ticks(5)
-    .tickSize(12);
+      var xaxis = d3.svg.axis()
+        .orient("top")
+        .scale(xscale);
 
-  var line = d3.svg.line()
-    .x(function(d){return xscale(date(d.time))})
-    .y(function(d){return yscale(d.cpu)})
+      var yaxis = d3.svg.axis()
+        .scale(yscale)
+        .orient("right")
+        .ticks(5)
+        .tickSize(12);
 
-  var tooltip = d3.select("body")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", -1);
+      var line = d3.svg.line()
+        .x(function(d){return xscale(date(d.time))})
+        .y(function(d){return yscale(d.cpu)})
 
-  var node = svg.selectAll('node')
-    .data(data)
-    .enter()
-    .append("circle")
-    .attr("cx", function(d){return xscale(date(d.time))})
-    .attr("cy", function(d){return yscale(d.cpu)})
-    .attr("r", 7)
-    .on("mouseover", function(d){ 
-      tooltip.text(attr + ": " + d.cpu +"\n\ndate:" + date(d.time))
-        .transition()
-        .duration(400)
-        .style("opacity", 1)
-        .style("left", (d3.event.pageX - 90) + "px")
-        .style("top", (d3.event.pageY - 20) + "px");
-    })
-    .on("mouseout", function(d){
-      tooltip.transition()
-        .duration(200)
+      var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
         .style("opacity", -1);
-    });
 
+      var node = svg.selectAll('node')
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d){return xscale(date(d.time))})
+        .attr("cy", function(d){return yscale(d.cpu)})
+        .attr("r", 7)
+        .on("mouseover", function(d){ 
+          tooltip.text(attr + ": " + d.cpu +"\n\ndate: " + date(d.time))
+            .transition()
+            .duration(400)
+            .style("opacity", 1)
+            .style("left", (d3.event.pageX - 90) + "px")
+            .style("top", (d3.event.pageY - 20) + "px");
+        })
+        .on("mouseout", function(d){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", -1);
+        });
 
-  var path = svg.append("path")
-    .attr("d", line(data));
+      var path = svg.append("path")
+        .attr("d", line(data));
 
-  svg.append("g")
-    .attr("class", "axis")
-    .attr("transform", "translate(0," + height + ")")
-    .call(xaxis);
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xaxis);
 
-  svg.append("g")
-    .attr("class", "axis")
-    .call(yaxis);
+      svg.append("g")
+        .attr("class", "axis")
+        .call(yaxis);
+      });
 }
 
 function array(attr, data){

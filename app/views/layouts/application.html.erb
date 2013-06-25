@@ -13,9 +13,9 @@
       <div class="navbar-inner">
         <a class="brand" class="text-center" href="#">Automated Alerting</a>
         <ul class="nav nav-tabs">
+          <li><a href="#" onclick="vis1();">Viz 1</a></li>
           <li><a href="#" onclick="begin_analysis(6324);">Test Alerting Request</a></li>
           <li><a href="#" onclick="place_name(6324);">Test GetName Request</a></li>
-       
 
           <!-- Start Server Dropdown Menu-->          
           <li class = "dropdown">      
@@ -37,9 +37,7 @@
                       if(key=="id")
                         var id = obj[key];
                     }
-                    url = "https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180"
-                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(&#39;" + url + "&#39;,0); begin_analysis(&#39;" + id + "&#39;,0);' ><input type='checkbox'>" + name + "</a></li>"
-                    console.log(test);
+                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='vis3(&#39;" + id + "&#39;,0); begin_analysis(&#39;" + id + "&#39); start_spin();'><input type='checkbox'>" + name + "</a></li>"
                     $("#server_nav").append(test);
                   }
                 }
@@ -61,10 +59,8 @@
                 success: function(data){
                   for(var key in data[0]){
                     var test = "<li role='presentation'><a role='menuitem'><input type='checkbox' name='"+key+"'>" + key + ",</a></li>"
-                    console.log(test);
                     $("#attr_nav").append(test);
                   }
-                  
                 }
               });
               </script>
@@ -81,7 +77,8 @@
 
     <div class="svg_container">
       <script type='text/javascript'>
-        request('https://wwws.appfirst.com/api/servers/6324/data/?num=180',0)
+        vis3("6324");
+        start_spin();
       </script>
     </div>
 
