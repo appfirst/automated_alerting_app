@@ -1,0 +1,20 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Server name:</b>
+  <%= @request.server_name %>
+</p>
+
+<p>
+  <b>Server:</b>
+  <%= @request.server_id %>
+</p>
+
+<p>
+  <b>Attr name:</b>
+  <%= @request.attr_name %>
+</p>
+
+
+<%= link_to 'Edit', edit_request_path(@request) %> |
+<%= link_to 'Back', requests_path %>
