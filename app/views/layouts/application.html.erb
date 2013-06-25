@@ -38,7 +38,8 @@
                         var id = obj[key];
                     }
                     url = "https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180"
-                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(&#39;" + url + "&#39;,0);'>" + name + "</a></li>"
+                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='request(&#39;" + url + "&#39;,0); begin_analysis(&#39;" + id + "&#39;,0);' ><input type='checkbox'>" + name + "</a></li>"
+                    console.log(test);
                     $("#server_nav").append(test);
                   }
                 }
@@ -51,7 +52,7 @@
           <!--Start Attribute dropdown menu-->          
           <li class = "dropdown">      
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">Attributes</a>
-            <ul class="dropdown-menu" id="attr_nav">
+            <div class="dropdown-menu" id="attr_nav">
               <script type="text/javascript"> 
               var req = $.ajax({
                 url: '/call',
@@ -59,7 +60,7 @@
                 data: 'url=https://wwws.appfirst.com/api/servers/',
                 success: function(data){
                   for(var key in data[0]){
-                    var test = "<li role='presentation'><a role='menuitem' href='#'>" + key + "</a></li>"
+                    var test = "<li role='presentation'><a role='menuitem'><input type='checkbox' name='"+key+"'>" + key + ",</a></li>"
                     console.log(test);
                     $("#attr_nav").append(test);
                   }
@@ -67,7 +68,7 @@
                 }
               });
               </script>
-            </ul> <!-- End Server Dropdown Menu -->
+            </div> <!-- End Server Dropdown Menu -->
           </li>
 
 
@@ -84,22 +85,6 @@
       </script>
     </div>
 
-<!--     <div class="alert-container">
-      <table class = "table table-hover table-bordered">
-        <thead>
-          <th> Server Name </th>
-        </thead>
-        <tbody id="table">
-          <tr><td>Porcupine</td></tr>  
-          <tr><td>Armadillo</td></tr>
-          <tr><td>Whale</td></tr>
-          <tr><td>Octopus</td></tr>
-          <tr><td>Naked Mole Rat</td></tr>         
-          <tr><td>Penguin</td></tr>  
-        </tbody>
-      </table>  
-    </div>
- -->
     <%= yield %>
 
   </body>
