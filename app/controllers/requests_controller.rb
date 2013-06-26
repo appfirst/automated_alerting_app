@@ -1,4 +1,7 @@
 class RequestsController < ApplicationController
+  helper_method :new
+
+
   # GET /requests
   # GET /requests.json
   def index
@@ -13,7 +16,7 @@ class RequestsController < ApplicationController
   # GET /requests/1
   # GET /requests/1.json
   def show
-    @request = Request.find(params[:id])
+    @request = Request.all
 
     respond_to do |format|
       format.html # show.html.erb
@@ -21,15 +24,15 @@ class RequestsController < ApplicationController
     end
   end
 
-  # GET /requests/new
-  # GET /requests/new.json
   def new
     @request = Request.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.json { render json: @request }
+      format.json { render json: @user }
     end
+
+    redirect_to :root
   end
 
   # GET /requests/1/edit
@@ -76,7 +79,7 @@ class RequestsController < ApplicationController
     @request.destroy
 
     respond_to do |format|
-      format.html { redirect_to requests_url }
+      format.html { redirect_to :root }
       format.json { head :no_content }
     end
   end

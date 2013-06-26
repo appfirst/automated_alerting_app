@@ -9,65 +9,33 @@
   </head> 
   <body>
 
+    <script type="text/javascript"> populate_database() </script>
+
+    <% Request.each do |r|%>
+      <% if r.running == false%>
+        <script type='text/javascript'>begin_analysis(<%= r.server_id %>);</script>
+        <%= r.running = true %>
+        <%= r.save %>
+      <% end %>
+    <% end %>
+
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <a class="brand" class="text-center" href="#">Automated Alerting</a>
         <ul class="nav nav-tabs">
-          <li><a href="#" onclick="vis1();">Viz 1</a></li>
           <li><a href="#" onclick="begin_analysis(6324);">Test Alerting Request</a></li>
-          <li><a href="#" onclick="place_name(6324);">Test GetName Request</a></li>
-
-          <!-- Start Server Dropdown Menu-->          
           <li class = "dropdown">      
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servers</a>
-            <ul class="dropdown-menu" id="server_nav">
-              <script type="text/javascript"> 
-              var req = $.ajax({
-                url: '/call',
-                type: 'GET',
-                data: 'url=https://wwws.appfirst.com/api/servers/',
-                success: function(data){
-                  for(var i=0; i<data.length;i++){
-                    var obj = data[i];
-
-                    for(var key in obj){
-                      var name;
-                      if(key == "nickname")
-                        var name = obj[key];
-                      if(key=="id")
-                        var id = obj[key];
-                    }
-                    var test = "<li role='presentation'><a role='menuitem' href='#' onclick='vis3(&#39;" + id + "&#39;,0); begin_analysis(&#39;" + id + "&#39); start_spin();'><input type='checkbox'>" + name + "</a></li>"
-                    $("#server_nav").append(test);
-                  }
-                }
-              });
-              </script>
-            </ul> <!-- End Server Dropdown Menu -->
-          </li>
-
-
-          <!--Start Attribute dropdown menu-->          
-          <li class = "dropdown">      
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Attributes</a>
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">New Request</a>
             <div class="dropdown-menu" id="attr_nav">
-              <script type="text/javascript"> 
-              var req = $.ajax({
-                url: '/call',
-                type: 'GET',
-                data: 'url=https://wwws.appfirst.com/api/servers/',
-                success: function(data){
-                  for(var key in data[0]){
-                    var test = "<li role='presentation'><a role='menuitem'><input type='checkbox' name='"+key+"'>" + key + ",</a></li>"
-                    $("#attr_nav").append(test);
-                  }
-                }
-              });
-              </script>
-            </div> <!-- End Server Dropdown Menu -->
+              <%= render "requests/form" %>
+            </div>
           </li>
-
-
+          <li class = "dropdown">      
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Show Requests</a>
+            <div class="dropdown-menu" id="attr_nav">
+              <%= render "requests/showall" %>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
@@ -77,7 +45,7 @@
 
     <div class="svg_container">
       <script type='text/javascript'>
-        vis3("6324");
+        vis3("6325");
         start_spin();
       </script>
     </div>

@@ -1,29 +1,31 @@
+<% @request = Request.new %>
+
 <%= form_for(@request) do |f| %>
-  <% if @request.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@request.errors.count, "error") %> prohibited this request from being saved:</h2>
 
-      <ul>
-      <% @request.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <% $i = 0 %>
+  <% servers = Array.new %>
+  <% Server.each do |s| %>
+    <% servers[$i] = [s.nickname, s.id]%>
+    <% $i += 1 %>
+   <% end %>
+
+  <% $i = 0 %>
+  <% attrs = Array.new %>
+  <% Attribute.each do |a| %>
+  <% attrs[$i] = [a.name, a.name]%>
+  <% $i += 1 %>
+   <% end %>
 
   <div class="field">
-    <%= f.label :server_name %><br />
-    <%= f.text_field :server_name %>
+    <%= f.select :server_id, servers%><br />
   </div>
-  <div class="field">
-    <%= f.label :server_id %><br />
-    <%= f.text_field :server_id %>
+
+ <div class="field">
+    <%= f.select :attr_name, attrs%><br />
   </div>
-  <div class="field">
-    <%= f.label :attr_name %><br />
-    <%= f.text_field :attr_name %>
-  </div>
+
   <div class="actions">
-    <%= f.submit %>
+  	<%= f.submit %>
   </div>
-<% end %>
+
+  <% end %>

@@ -1,0 +1,20 @@
+<table class = "table table-striped table-hover table-condensed">
+	<tr>
+		<th>
+		<th>
+		<th>Id</th>
+		<th>Attribute</th>
+		<th>
+	</tr>
+
+<% Request.each do |r| %>
+	<tr>
+		<td></td>
+		<td></td>
+		<td><%= r.server_id %></td>
+		<td><%= r.attr_name %></td>
+		<td><%= link_to 'delete', r, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+	</tr>
+<% end %>
+
+</table>

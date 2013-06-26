@@ -43,7 +43,7 @@ function graph_title(svg, data){
 
 function vis1(){
 
-  d3.json("/call?url=https://wwws.appfirst.com/api/servers/", function(error, response){
+  d3.json("/call?url=https://wwws.appfirst.com/api/servers/&", function(error, response){
     console.log(response)
     var data = [];
     data = response;
