@@ -1,0 +1,22 @@
+    <div class="alert-container">
+      <table class = "table table-hover table-bordered">
+        <thead>
+          <th> Server Name </th>
+        </thead>
+        <tbody id="table">
+ 
+            <% Alert.each do |alert| %>
+            <tr>
+                <td><%= alert.server_name %></td>
+                <td><%= alert.server_id %></td>
+                <td><%= alert.time_stamp %></td>
+                <td><%= alert.attr %></td>
+                <td><%= alert.reason %></td>
+                <td><%= link_to 'Show', alert %></td>
+            </tr>
+            <% end %>
+        </tbody>
+      </table><!--  End of alert box -->
+    </div>
+
+            <%= yield %>

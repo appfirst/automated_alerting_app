@@ -10,5 +10,5 @@ AppfirstAlerting::Application.routes.draw do
   match "/new_alert" => "alerts#new"
   match "/new_request" => "requests#new"
   match "/populate_database" => "application#populate_database"
-
+  match "/toggle_error" => "application#toggle_error"
 end

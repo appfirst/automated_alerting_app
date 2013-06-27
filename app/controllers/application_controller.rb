@@ -31,6 +31,7 @@ class ApplicationController < ActionController::Base
 
     $i=0
     data = response[0].to_s.split(",")
+    logger.debug(data);
 
     logger.debug(data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", ""))
 
@@ -57,8 +58,7 @@ class ApplicationController < ActionController::Base
 
   def call2(url)
     #note: problem was because I was not using ssl
-    pass = Base64.encode64("#{Rails.application.config.user_name}:#{Rails.application.config.api_key}")
-    auth = {:username => Rails.application.config.user_name, :password => pass}
+    auth = {:username => Rails.application.config.user_name, :password => Rails.application.config.api_key}
 
     response = HTTParty.get(url, 
       :basic_auth => auth,
@@ -70,12 +70,15 @@ class ApplicationController < ActionController::Base
   def init()
     data = call2("https://wwws.appfirst.com/api/servers/#{params[:id]}/data/?num=180")
     @timeseries = create_timeseries(data, "cpu")
+
     #average(@timeseries)
     #grubbs test not currently working
     #grubbs_test(@timeseries)
     if hour_test(@timeseries) == true
       session[:server_id] = params[:id];
-      new
+      @alert = Alert.new
+      @alert.server_id = session[:server_id]
+      @alert.save
     # elsif 
       # session[:server_id] = params[:id]; #Remove once testing is completed
       # new
@@ -107,22 +110,31 @@ class ApplicationController < ActionController::Base
     return @timeseries
   end
 
+  @erroris = false
+
   def hour_test(timeseries)
 
-    # uncomment to create an anomaly for testing purposes
-    # be sure to modify value so that it is anomalous
-    len = timeseries.length
+    if Rails.application.config.error == "true"
+      len = timeseries.length
+      timeseries[len-1] = 20
+    end
 
     avg = average(timeseries)
     std = timeseries.stdev
-    tail = three_minute_average(timeseries)
+    tail = three_minute_average(@timeseries)
 
     puts (tail-avg).abs > (3*std)
     return (tail-avg).abs > (3 * std)
   end
 
-  def insert_error
-
+  def toggle_error
+    if Rails.application.config.error == "true"
+      Rails.application.config.error = "false"
+    elsif Rails.application.config.error == "false"
+      Rails.application.config.error = "true"
+    end
+    logger.debug("toby" + Rails.application.config.error)
+    redirect_to :root
   end
 
   #Grubbs test not currently working
