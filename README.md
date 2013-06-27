@@ -8,16 +8,14 @@ Application's current status:
 <ul>
 	<li> Central graph template with view of current servers' CPU </li>
 	<li> Working with algorithms that compares standad deviation and mean </li>
-	<li> Can select server you wish to monitor </li>
+	<li> Can select server and attribute you wish to monitor </li>
 	<li> Analyses is automated </li>
 </ul>
 
 To be completed
 <ul>
-	<li> Create alert model</li>
-	<li> Store alerts in database so that they will persist across sessions </li>
+	<li> Graphs that show multiple servers/selected attribute </li>
 	<li> Implement multiple anomaly-recognizing algorithms </li>
-	<li> Automated alerting for selected servers (based on check box in menu)</li>
 	<li> Support for multiple attributes</li>
 </ul>
 
