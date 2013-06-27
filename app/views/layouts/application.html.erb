@@ -19,8 +19,14 @@
       <div class="navbar-inner">
         <a class="brand" class="text-center" href="#">Automated Alerting</a>
         <ul class="nav nav-tabs">
-          <li><a href="#" onclick="begin_analysis(6324);">Test</a></li>
+<!--           <li><a href="#" onclick="begin_analysis(6324);">Test</a></li> -->
           <li><a href="/toggle_error">Toggle Error</a></li>
+          <li class = "dropdown">      
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Servers</a>
+            <div class="dropdown-menu" id="attr_nav">
+              <%= render "servers/showall" %>
+            </div>
+          </li>
           <li class = "dropdown">      
             <a class="dropdown-toggle" data-toggle="dropdown" href="#">New Request</a>
             <div class="dropdown-menu" id="attr_nav">
@@ -41,8 +47,10 @@
     <div class="spinner" id="spinner">
     </div>
 
-    <%= render "alerts/table" %>
-
+    <div class="table">
+      <%= render "alerts/table" %>
+    </div>
+  
     <div class="svg_container">
       <script type='text/javascript'>
         vis3("6325");

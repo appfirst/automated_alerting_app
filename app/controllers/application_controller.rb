@@ -78,12 +78,17 @@ class ApplicationController < ActionController::Base
       session[:server_id] = params[:id];
       @alert = Alert.new
       @alert.server_id = session[:server_id]
+      logger.debug(params[:id])
+      @alert.server_name = Server.where(id: 9871)[0].nickname
+      @alert.time_stamp = Time.now
       @alert.save
+      # render partial: "alerts/table"
     # elsif 
       # session[:server_id] = params[:id]; #Remove once testing is completed
       # new
     end
-    render :json => hour_test(@timeseries)
+    render :partial => "alerts/table"
+    # render :json => hour_test(@timeseries)
   end
 
   def three_minute_average(timeseries)

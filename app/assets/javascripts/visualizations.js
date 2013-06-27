@@ -1,5 +1,9 @@
 var spin;
 
+  $('.dropdown-menu').find('form').click(function (e) {
+    e.stopPropagation();
+  });
+
 function start_spin(){
   spin = new Spinner().spin();
   document.getElementById("spinner").appendChild(spin.el);
@@ -18,10 +22,6 @@ function place_name(svg, id){
       for(var key in data){
         if(key == "nickname" && svg !=null)
           graph_title(svg, data[key])
-        else if (key=="nickname"){
-          var notice = "<tr><td>" + data[key] + "</td></tr>";
-          $("#table").prepend(notice);
-        }
       }
     },
     error: function(data){

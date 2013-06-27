@@ -32,7 +32,7 @@ class RequestsController < ApplicationController
       format.json { render json: @user }
     end
 
-    redirect_to :root
+  
   end
 
   # GET /requests/1/edit

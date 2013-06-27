@@ -15,7 +15,7 @@
   <% attrs[$i] = [a.name, a.name]%>
   <% $i += 1 %>
    <% end %>
-
+   <center>
   <div class="field">
     <%= f.select :server_id, servers%><br />
   </div>
@@ -27,5 +27,5 @@
   <div class="actions">
   	<%= f.submit %>
   </div>
-
+</center>
   <% end %>

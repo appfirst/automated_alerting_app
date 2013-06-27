@@ -51,6 +51,21 @@ text{
 	padding-top:8px;
 }
 
+.button_to{
+	background-color:#000;
+	border-bottom:none;
+	font-size: 14px;
+	color: #fff;
+	padding-top:8px;
+}
+
+.button_to div{
+	background-color:#000;
+	border-bottom:none;
+	font-size: 14px;
+	color: #fff;
+}
+
 .nav-tabs li{
 	color: #000;
 }
@@ -94,7 +109,7 @@ div.tooltip{
 }
 
 .dropdown-menu{
-	height: 600px;
+	height: 200px;
 	width: 300px;
 	overflow:scroll;
 }
