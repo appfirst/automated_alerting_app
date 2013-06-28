@@ -77,6 +77,11 @@ text{
 	border-color:#000;
 }
 
+.navbar .nav li.dropdown.open > .dropdown-toggle{
+	background-color: #fff;
+	color: #000;
+}
+
 .navbar .nav > li > a {
 	color:#fff;
 }

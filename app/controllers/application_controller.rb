@@ -30,15 +30,20 @@ class ApplicationController < ActionController::Base
       :headers => {'Content-Type' => 'application/json'})
 
     $i=0
+
+    logger.debug("porcupine\n\n\n")
     data = response[0].to_s.split(",")
     logger.debug(data);
 
-    logger.debug(data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", ""))
+    logger.debug("whale\n\n\n")
+    logger.debug(data[32].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", ""))
 
-    while data[$i] != nil and Attribute.where(name: data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", "")).exists? == false do
-      a = Attribute.new
-      a.name = data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", "")
-      a.save
+    while data[$i] != nil do
+      if Attribute.where(name: data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", "")).exists? == false 
+        a = Attribute.new
+        a.name = data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", "")
+        a.save
+      end
       $i+=1
     end
 
