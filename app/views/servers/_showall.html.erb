@@ -1,3 +1,3 @@
 <% Server.each do |s| %>
-	<li role="presentation"><a role="menuitem" href="#" onclick="vis3(<%= s.id %>)"> <%= s.nickname %></a></li>
+	<li role="presentation"><a role="menuitem" href="#" onclick="vis3(<%= s.server_id %>, '<%=s.nickname%>', 'cpu')"> <%= s.nickname %> (cpu)</a></li>
 <% end %>

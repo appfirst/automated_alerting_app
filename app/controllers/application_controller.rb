@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
       s.nickname = response[$i]["nickname"]
       s.hostname = response[$i]["hostname"]
       s.os = response[$i]["os"]
-      s.id = response[$i]["id"]
+      s.server_id = response[$i]["id"]
       s.current_version = response[$i]["current_version"]
       s.save
 
@@ -69,26 +69,23 @@ class ApplicationController < ActionController::Base
 
   def init()
     data = call2("https://wwws.appfirst.com/api/servers/#{params[:id]}/data/?num=180")
-    @timeseries = create_timeseries(data, "cpu")
+    @timeseries = create_timeseries(data, params[:attr])
 
     #average(@timeseries)
     #grubbs test not currently working
     #grubbs_test(@timeseries)
+    logger.debug("polyp")
+    logger.debug(Server.find_by(server_id: params[:id]).nickname)
     if hour_test(@timeseries) == true
-      session[:server_id] = params[:id];
+      session[:server_id] = params[:id]
       @alert = Alert.new
-      @alert.server_id = session[:server_id]
-      logger.debug(params[:id])
-      @alert.server_name = Server.where(id: 9871)[0].nickname
+      @alert.server_id = params[:id]
+      @alert.attr = params[:attr]
+      @alert.server_name = Server.find_by(server_id: params[:id]).nickname
       @alert.time_stamp = Time.now
       @alert.save
-      # render partial: "alerts/table"
-    # elsif 
-      # session[:server_id] = params[:id]; #Remove once testing is completed
-      # new
     end
     render :partial => "alerts/table"
-    # render :json => hour_test(@timeseries)
   end
 
   def three_minute_average(timeseries)
@@ -114,8 +111,6 @@ class ApplicationController < ActionController::Base
 
     return @timeseries
   end
-
-  @erroris = false
 
   def hour_test(timeseries)
 

@@ -11,10 +11,6 @@
 
     <script type="text/javascript"> populate_database() </script>
 
-    <% Request.each do |r|%>
-        <script type='text/javascript'>begin_analysis(<%= r.server_id %>);</script>
-    <% end %>
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <a class="brand" class="text-center" href="#">Automated Alerting</a>
@@ -53,10 +49,14 @@
   
     <div class="svg_container">
       <script type='text/javascript'>
-        vis3("6325");
+        vis3("6325", "hbase-regionserver0","disk_percent");
         start_spin();
       </script>
     </div>
+
+    <% Request.each do |r|%>
+        <script type='text/javascript'>begin_analysis(<%= r.server_id %>,"<%= r.attr_name %>");</script>
+    <% end %>
 
     <%= yield %>
 

@@ -13,34 +13,6 @@ function stop_spin(){
   spin.stop()
 }
 
-function place_name(svg, id){
-  $.ajax({
-    url: '/call',
-    type: 'GET',
-    data: 'url=https://wwws.appfirst.com/api/servers/' + id,
-    success: function(data){
-      for(var key in data){
-        if(key == "nickname" && svg !=null)
-          graph_title(svg, data[key])
-      }
-    },
-    error: function(data){
-      console.log("no server name for that id!");
-    }
-  });
-}
-
-function graph_title(svg, data){
-      svg.append("text")
-      .attr("x", $('svg').attr("width")/2)             
-      .attr("y", $('svg').attr("height")-($('svg').attr("height")- 14))
-      .attr("text-anchor", "middle")  
-      .style("font-size", "18px") 
-      .style("fill", "black")
-      .text(data);
-      return data;
-}
-
 function vis1(){
 
   d3.json("/call?url=https://wwws.appfirst.com/api/servers/&", function(error, response){
@@ -135,7 +107,7 @@ function vis2(response){
   });
 }
 
-function vis3(id){
+function vis3(id, name, attr){
   d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
     id + "/data/?num=180", function(error, response){
 
@@ -148,18 +120,23 @@ function vis3(id){
       var width = 1300;
       var margin = 1;
 
-      var attr = "cpu";
-
       var svg = d3.select(".svg_container").insert("svg", "svg")
         .attr("width", width)
         .attr("height", height);
 
-      place_name(svg, id);
+      svg.append("text")
+        .attr("x", $('svg').attr("width")/2)             
+        .attr("y", $('svg').attr("height")-($('svg').attr("height")- 14))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "18px") 
+        .style("fill", "black")
+        .text(name + attr);
 
       var xscale = d3.time.scale()
         .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])
         .range([0, width]);
 
+      var test = "d." + attr
       var yscale = d3.scale.linear()
         .domain([d3.min(array(attr, data)) - margin, d3.max(array(attr, data)) + margin])
         .range([height, 0])
@@ -174,9 +151,10 @@ function vis3(id){
         .ticks(5)
         .tickSize(12);
 
+
       var line = d3.svg.line()
         .x(function(d){return xscale(date(d.time))})
-        .y(function(d){return yscale(d.cpu)})
+        .y(function(d){return yscale(eval(test))})
 
       var tooltip = d3.select("body")
         .append("div")
@@ -188,10 +166,10 @@ function vis3(id){
         .enter()
         .append("circle")
         .attr("cx", function(d){return xscale(date(d.time))})
-        .attr("cy", function(d){return yscale(d.cpu)})
+        .attr("cy", function(d){return yscale(eval(test))})
         .attr("r", 7)
         .on("mouseover", function(d){ 
-          tooltip.text(attr + ": " + d.cpu +"\n\ndate: " + date(d.time))
+          tooltip.text(attr + ": " + test +"\n\ndate: " + date(d.time))
             .transition()
             .duration(400)
             .style("opacity", 1)

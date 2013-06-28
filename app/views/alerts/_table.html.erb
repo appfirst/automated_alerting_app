@@ -3,18 +3,21 @@
         <thead>
           <th> Server Name </th>
           <th> Server ID </th>
+          <th> Attribute </th>
           <th> Alert Time </th>
         </thead>
         <tbody id="table">
  
             <% Alert.each do |alert| %>
-            <tr>
+            <tr onMouseOver="vis3(<%= alert.server_id %>, '<%= alert.server_name %>', '<%= alert.attr %>');">
                 <td><%= alert.server_name %></td>
                 <td><%= alert.server_id %></td>
+                <td><%= alert.attr %></td>
                 <td><%= alert.time_stamp %></td>
                 <td><%= link_to 'Show', alert %></td>
             </tr>
             <% end %>
+
         </tbody>
       </table><!--  End of alert box -->
     </div>
