@@ -9,9 +9,6 @@ class ApplicationController < ActionController::Base
       :headers => {'Content-Type' => 'application/json'})
 
     $i = 0;
-
-    logger.debug(response[0]["nickname"])
-
     while response[$i] != nil and Server.where(nickname: response[$i]["nickname"]).exists? == false do
       s = Server.new
       s.nickname = response[$i]["nickname"]
@@ -30,13 +27,7 @@ class ApplicationController < ActionController::Base
       :headers => {'Content-Type' => 'application/json'})
 
     $i=0
-
-    logger.debug("porcupine\n\n\n")
     data = response[0].to_s.split(",")
-    logger.debug(data);
-
-    logger.debug("whale\n\n\n")
-    logger.debug(data[32].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", ""))
 
     while data[$i] != nil do
       if Attribute.where(name: data[$i].scan(/"([^"]*)"/).to_s.gsub("[","").gsub("]","").gsub("\"", "")).exists? == false 
@@ -79,8 +70,9 @@ class ApplicationController < ActionController::Base
     #average(@timeseries)
     #grubbs test not currently working
     #grubbs_test(@timeseries)
-    logger.debug("polyp")
-    logger.debug(Server.find_by(server_id: params[:id]).nickname)
+
+    logger.debug(@timeseries)
+    
     if hour_test(@timeseries) == true
       session[:server_id] = params[:id]
       @alert = Alert.new
@@ -110,10 +102,11 @@ class ApplicationController < ActionController::Base
     @timeseries = Array.new 
 
     while json[$i] != nil do
-      @timeseries[$i] = json[$i][tag]
-      $i += 1
+      if json[$i][tag] != nil 
+        @timeseries[$i] = json[$i][tag]
+        $i += 1
+      end
     end
-
     return @timeseries
   end
 
@@ -121,14 +114,21 @@ class ApplicationController < ActionController::Base
 
     if Rails.application.config.error == "true"
       len = timeseries.length
-      timeseries[len-1] = 20
+      timeseries[len-1] = 109
     end
-
     avg = average(timeseries)
-    std = timeseries.stdev
-    tail = three_minute_average(@timeseries)
+    logger.debug("this is the average")
+    logger.debug(avg)
 
-    puts (tail-avg).abs > (3*std)
+    std = timeseries.stdev
+    logger.debug("this is the standard")
+    logger.debug(std)
+
+    tail = three_minute_average(@timeseries)
+    logger.debug("this is the tail average")
+    logger.debug(tail)
+
+    logger.debug( (tail-avg).abs > (3*std))
     return (tail-avg).abs > (3 * std)
   end
 
@@ -145,14 +145,18 @@ class ApplicationController < ActionController::Base
   #Grubbs test not currently working
   def grubbs_test(timeseries)
 
+    logger.debug(timeseries)
+
     len = timeseries.length
+
+    if Rails.application.config.error == "true"
+      timeseries[len-1] = 20
+    end
 
     deviation = timeseries.stdev
     avg = average(timeseries)
     tail = three_minute_average(timeseries)
     grubbs_stat = (tail - avg)/deviation
-
-    len = timeseries.length
 
     #decided on 0.05 for threshold arbitrarily
     threshold = Statistics2.t__X_(0.05 / (2 * len), len - 2)**2

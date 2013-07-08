@@ -8,7 +8,7 @@
 	</tr>
 
 <% Request.each do |r| %>
-	<tr>
+	<tr onclick="vis3(<%= r.server_id %>, '<%= r.server_id %>', '<%= r.attr_name %>');">
 		<td></td>
 		<td></td>
 		<td><%= r.server_id %></td>

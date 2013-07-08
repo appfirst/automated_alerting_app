@@ -5,7 +5,7 @@
   <% $i = 0 %>
   <% servers = Array.new %>
   <% Server.each do |s| %>
-    <% servers[$i] = [s.nickname, s.id]%>
+    <% servers[$i] = [s.nickname, s.server_id]%>
     <% $i += 1 %>
    <% end %>
 

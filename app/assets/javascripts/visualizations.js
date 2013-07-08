@@ -169,7 +169,7 @@ function vis3(id, name, attr){
         .attr("cy", function(d){return yscale(eval(test))})
         .attr("r", 7)
         .on("mouseover", function(d){ 
-          tooltip.text(attr + ": " + test +"\n\ndate: " + date(d.time))
+          tooltip.text(attr + ": " + eval(test) +"\n\ndate: " + date(d.time))
             .transition()
             .duration(400)
             .style("opacity", 1)

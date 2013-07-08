@@ -5,6 +5,7 @@ function const_req(id, attr){
 	$.ajax({
 		url: '/init',
 		type: 'GET',
+		async: true,
 		data: {id: id, attr: attr},
 		success: function(data){
 			$('#table').replaceWith(data);
