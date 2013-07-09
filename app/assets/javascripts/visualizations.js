@@ -196,6 +196,114 @@ function vis3(id, name, attr){
       });
 }
 
+function vis4(id, name, attr, end){
+  d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
+    id + "/data/?num=180&end=" + new Date(end).getTime(), function(error, response){
+
+      console.log("This has been called")
+
+      stop_spin();
+
+      var data = [];
+      data = response;
+
+      var height = 230;
+      var width = 1300;
+      var margin = 1;
+
+      var svg = d3.select(".svg_container").insert("svg", "svg")
+        .attr("width", width)
+        .attr("height", height);
+
+      svg.append("text")
+        .attr("x", $('svg').attr("width")/2)             
+        .attr("y", $('svg').attr("height")-($('svg').attr("height")- 14))
+        .attr("text-anchor", "middle")  
+        .style("font-size", "18px") 
+        .style("fill", "black")
+        .text(name + attr);
+
+      var xscale = d3.time.scale()
+        .domain([new Date(date(data[0].time)), new Date(date(data[data.length - 1].time))])
+        .range([0, width]);
+
+      var test = "d." + attr
+      var yscale = d3.scale.linear()
+        .domain([d3.min(array(attr, data)) - margin, d3.max(array(attr, data)) + margin])
+        .range([height, 0])
+
+      var xaxis = d3.svg.axis()
+        .orient("top")
+        .scale(xscale);
+
+      var yaxis = d3.svg.axis()
+        .scale(yscale)
+        .orient("right")
+        .ticks(5)
+        .tickSize(12);
+
+      var line = d3.svg.line()
+        .x(function(d){return xscale(date(d.time))})
+        .y(function(d){return yscale(eval(test))})
+
+      var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", -1);
+
+      var node = svg.selectAll('node')
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("cx", function(d){return xscale(date(d.time))})
+        .attr("cy", function(d){return yscale(eval(test))})
+        .attr("r", 7)
+        .style("opacity", function(d){
+          var value = Math.abs(d.time - parseInt(String(new Date(end).getTime()).substring(0,10)))
+          if (value > 120 && value < 150){
+            return 1
+          }
+          else{
+            return -1
+          }
+        })
+        .style("fill", function(d){
+          var value = Math.abs(d.time - parseInt(String(new Date(end).getTime()).substring(0,10)))
+          if (value > 100 && value < 150){
+            return "red"
+          }
+          else{
+            return "none"
+          }
+        })
+        .on("mouseover", function(d){ 
+          tooltip.text(attr + ": " + eval(test) +"\n\ndate: " + date(d.time))
+            .transition()
+            .duration(500)
+            .style("opacity", 1)
+            .style("left", (d3.event.pageX - 90) + "px")
+            .style("top", (d3.event.pageY - 20) + "px");
+        })
+        .on("mouseout", function(d){
+          tooltip.transition()
+            .duration(200)
+            .style("opacity", -1);
+        })
+
+      var path = svg.append("path")
+        .attr("d", line(data));
+
+      svg.append("g")
+        .attr("class", "axis")
+        .attr("transform", "translate(0," + height + ")")
+        .call(xaxis);
+
+      svg.append("g")
+        .attr("class", "axis")
+        .call(yaxis);
+      });
+}
+
 function array(attr, data){
   var result = [];
   for (var i=0; i<data.length; i++){

@@ -67,19 +67,13 @@ class ApplicationController < ActionController::Base
     data = call2("https://wwws.appfirst.com/api/servers/#{params[:id]}/data/?num=180")
     @timeseries = create_timeseries(data, params[:attr])
 
-    #average(@timeseries)
-    #grubbs test not currently working
-    #grubbs_test(@timeseries)
-
-    logger.debug(@timeseries)
-    
     if hour_test(@timeseries) == true
       session[:server_id] = params[:id]
       @alert = Alert.new
       @alert.server_id = params[:id]
       @alert.attr = params[:attr]
       @alert.server_name = Server.find_by(server_id: params[:id]).nickname
-      @alert.time_stamp = Time.now
+      @alert.time_stamp = data[0]["time"]
       @alert.save
     end
     render :partial => "alerts/table"
