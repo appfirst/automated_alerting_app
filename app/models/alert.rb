@@ -4,7 +4,7 @@ class Alert
   
   field :server_name, type: String
   field :server_id, type: String
-  field :time_stamp, type: Time
+  field :time_stamp, type: Integer
   field :attr, type: String
   field :reason, type: String
 

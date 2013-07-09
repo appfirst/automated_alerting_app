@@ -9,12 +9,13 @@
         <tbody id="table">
  
             <% Alert.each do |alert| %>
-            <tr onMouseOver="vis4(<%= alert.server_id %>, '<%= alert.server_name %>', '<%= alert.attr %>', '<%= alert.time_stamp %>')">
+            <tr onMouseOver="vis4(<%= alert.server_id %>, '<%= alert.server_name %>', '<%= alert.attr %>', '<%= alert.time_stamp.to_i.to_s %>')">
                 <td><%= alert.server_name %></td>
                 <td><%= alert.server_id %></td>
                 <td><%= alert.attr %></td>
                 <td><%= Time.at(alert.time_stamp) %></td>
-                <td><%= link_to 'Show', alert %></td>
+                <td><%= link_to 'show', alert %></td>
+                <td><%= link_to 'delete', alert, method: :delete, data: { confirm: 'Are you sure?' } %></td>
             </tr>
             <% end %>
 

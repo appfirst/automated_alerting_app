@@ -16,7 +16,6 @@ function stop_spin(){
 function vis1(){
 
   d3.json("/call?url=https://wwws.appfirst.com/api/servers/&", function(error, response){
-    console.log(response)
     var data = [];
     data = response;
 
@@ -198,14 +197,18 @@ function vis3(id, name, attr){
 
 function vis4(id, name, attr, end){
   d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
-    id + "/data/?num=180&end=" + new Date(end).getTime(), function(error, response){
-
-      console.log("This has been called")
+    id + "/data/?num=180&end=" + parseInt(String(end).substring(0,10)), function(error, response){
 
       stop_spin();
 
       var data = [];
       data = response;
+
+      console.log("this is the first time point " + data[0].time)
+      console.log("this is the last time point  " + data[data.length -1].time)
+      console.log("this is the time was put in  " + end)
+      console.log("this is the time in the url  " + parseInt(String(end).substring(0,10)))
+      console.log(" ")
 
       var height = 230;
       var width = 1300;

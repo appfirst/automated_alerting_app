@@ -59,7 +59,6 @@ class ApplicationController < ActionController::Base
     response = HTTParty.get(url, 
       :basic_auth => auth,
       :headers => {'Content-Type' => 'application/json'})
-
     return response
   end
 
@@ -73,7 +72,7 @@ class ApplicationController < ActionController::Base
       @alert.server_id = params[:id]
       @alert.attr = params[:attr]
       @alert.server_name = Server.find_by(server_id: params[:id]).nickname
-      @alert.time_stamp = data[0]["time"]
+      @alert.time_stamp = Integer(data[0]["time"])
       @alert.save
     end
     render :partial => "alerts/table"
@@ -111,18 +110,15 @@ class ApplicationController < ActionController::Base
       timeseries[len-1] = 109
     end
     avg = average(timeseries)
-    logger.debug("this is the average")
-    logger.debug(avg)
-
+    # logger.debug("this is the average")
+    # logger.debug(avg)
     std = timeseries.stdev
-    logger.debug("this is the standard")
-    logger.debug(std)
-
+    # logger.debug("this is the standard")
+    # logger.debug(std)
     tail = three_minute_average(@timeseries)
-    logger.debug("this is the tail average")
-    logger.debug(tail)
-
-    logger.debug( (tail-avg).abs > (3*std))
+    # logger.debug("this is the tail average")
+    # logger.debug(tail)
+    # logger.debug( (tail-avg).abs > (3*std))
     return (tail-avg).abs > (3 * std)
   end
 
