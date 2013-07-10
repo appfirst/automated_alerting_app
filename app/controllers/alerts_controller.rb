@@ -5,6 +5,9 @@ class AlertsController < ApplicationController
   require 'ruby-standard-deviation'
   require 'statistics2'
 
+  layout nil
+  layout 'application', :except => :show
+
   def index
     @alerts = Alert.all
 
@@ -17,10 +20,12 @@ class AlertsController < ApplicationController
   def show
     @alert = Alert.find(params[:id])
 
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @alert }
-    end
+    # respond_to do |format|
+    #   format.html { render :layout => false, show => true } # your-action.html.erb
+    # end
+
+    render "show", :layout => false
+
   end
 
   def new
@@ -69,5 +74,4 @@ class AlertsController < ApplicationController
       format.json { head :no_content }
     end
   end
-
 end

@@ -44,8 +44,14 @@ class ApplicationController < ActionController::Base
   def call
     #note: problem was because I was not using ssl
     auth = {:username => Rails.application.config.user_name, :password => Rails.application.config.api_key}
+   
+    if params[:end] != nil 
+      url = "#{params[:url]}&end=#{params[:end]}"
+    else
+      url = params[:url]
+    end
 
-    response = HTTParty.get(params[:url], 
+    response = HTTParty.get(url, 
       :basic_auth => auth,
       :headers => {'Content-Type' => 'application/json'})
 
@@ -72,7 +78,8 @@ class ApplicationController < ActionController::Base
       @alert.server_id = params[:id]
       @alert.attr = params[:attr]
       @alert.server_name = Server.find_by(server_id: params[:id]).nickname
-      @alert.time_stamp = Integer(data[0]["time"])
+      @alert.time_stamp = Integer(data[data.length-1]["time"])
+      logger.debug(Integer(data[data.length-1]["time"]))
       @alert.save
       render :partial => "alerts/new_alert_to_table", :object => @alert
     else 

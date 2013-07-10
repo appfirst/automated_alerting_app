@@ -204,12 +204,6 @@ function vis4(id, name, attr, end){
       var data = [];
       data = response;
 
-      console.log("this is the first time point " + data[0].time)
-      console.log("this is the last time point  " + data[data.length -1].time)
-      console.log("this is the time was put in  " + end)
-      console.log("this is the time in the url  " + parseInt(String(end).substring(0,10)))
-      console.log(" ")
-
       var height = 230;
       var width = 1300;
       var margin = 1;
@@ -306,6 +300,30 @@ function vis4(id, name, attr, end){
         .call(yaxis);
       });
 }
+
+function vis5(id, name, attr, time){
+  var processes = [];
+
+  //returns an array of all the process uids attributed to this server
+  d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
+    id + "/processes", function(error, response){
+      spin.stop();
+      console.log(response);
+      processes = array("uid", response);
+      console.log(processes)
+
+      console.log("porcupine")
+      console.log(processes.length)
+
+      for( var i=0; i<processes.length; i++){
+        console.log("starfish")
+        d3.json("/call?url=https://wwws.appfirst.com/api/processes/" + 
+          processes[i] + "/data", function(error, response){
+           console.log(response);
+         });
+      }
+    });
+  }
 
 function array(attr, data){
   var result = [];

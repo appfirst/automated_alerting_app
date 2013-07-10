@@ -14,13 +14,14 @@
                 <td><%= alert.server_id %></td>
                 <td><%= alert.attr %></td>
                 <td><%= Time.at(alert.time_stamp) %></td>
-                <td><%= link_to 'show', alert %></td>
+                <td><a class="btn" href="#" onclick="get_modal('<%=alert.id%>')" data-toggle="modal" data-target="#myModal">show</a>
+                </td>
                 <td><%= link_to 'delete', alert, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-            </tr>
+              </tr>
             <% end %>
 
         </tbody>
       </table><!--  End of alert box -->
     </div>
 
-<%= yield %>
+            <%= yield %>

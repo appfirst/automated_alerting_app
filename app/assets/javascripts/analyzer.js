@@ -25,3 +25,18 @@ function begin_analysis(id, attr){
 	const_req(id, attr); //Switch lines when you only want to execute once upon button click
 	setInterval(function(){const_req(id, attr)}, 60000);
 }
+
+function get_modal(id){
+	console.log("went into get_modal")
+	$.ajax({
+		url: 'alerts/' + id,
+		type: 'GET',
+		success: function(data){
+			console.log("THIS IS THE DATA WE ARE LOOKING FOR")
+			console.log(data);
+			$('#myModal').html("")
+			$('#myModal').append(data);
+			$('#myModal').modal('show')
+		}
+	})
+}
