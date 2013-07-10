@@ -74,8 +74,10 @@ class ApplicationController < ActionController::Base
       @alert.server_name = Server.find_by(server_id: params[:id]).nickname
       @alert.time_stamp = Integer(data[0]["time"])
       @alert.save
+      render :partial => "alerts/new_alert_to_table", :object => @alert
+    else 
+      render nothing: true
     end
-    render :partial => "alerts/table"
   end
 
   def three_minute_average(timeseries)

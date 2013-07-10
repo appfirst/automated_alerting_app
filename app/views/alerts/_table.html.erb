@@ -9,7 +9,7 @@
         <tbody id="table">
  
             <% Alert.each do |alert| %>
-            <tr onMouseOver="vis4(<%= alert.server_id %>, '<%= alert.server_name %>', '<%= alert.attr %>', '<%= alert.time_stamp.to_i.to_s %>')">
+            <tr class='alert' onMouseOver="vis4(<%= alert.server_id %>, '<%= alert.server_name %>', '<%= alert.attr %>', '<%= alert.time_stamp.to_i.to_s %>')">
                 <td><%= alert.server_name %></td>
                 <td><%= alert.server_id %></td>
                 <td><%= alert.attr %></td>
@@ -23,4 +23,4 @@
       </table><!--  End of alert box -->
     </div>
 
-            <%= yield %>
+<%= yield %>

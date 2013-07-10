@@ -8,7 +8,7 @@ function const_req(id, attr){
 		async: true,
 		data: {id: id, attr: attr},
 		success: function(data){
-			$('#table').replaceWith(data);
+			$('#table').prepend(data);
 		}
 	})
 }

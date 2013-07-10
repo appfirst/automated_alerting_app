@@ -1,0 +1,12 @@
+<%= content_tag_for(:tr, @alert) do %>
+
+console.log("this was called")
+
+		<td><%= @alert.server_name %></td>
+		<td><%= @alert.server_id %></td>
+		<td><%= @alert.attr %></td>
+		<td><%= Time.at(@alert.time_stamp) %></td>
+		<td><%= link_to 'show', @alert %></td>
+		<td><%= link_to 'delete', @alert, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+
+<% end %>
