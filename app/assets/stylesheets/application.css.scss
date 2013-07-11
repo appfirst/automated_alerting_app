@@ -12,6 +12,15 @@
  *= require_self
  */
 
+.chart rect {
+	font: 10px sans-serif;
+	fill: red;
+	text-align: right;
+	padding: 3px;
+	margin: 1px;
+	color: white;
+}
+
 #spinner{
 	position: absolute;
 	margin-left: 750px;
@@ -125,9 +134,9 @@ div.tooltip{
 
 .svg_container{
 	fill:black;
-	margin-left: 140px;
+	margin-left: 40px;
 	margin-top: 60px;
-	width:1350px;
+	width:1300px;
 	height:230px;
 	max-height:270px;
 	overflow:hidden;

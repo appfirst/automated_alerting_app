@@ -196,8 +196,23 @@ function vis3(id, name, attr){
 }
 
 function vis4(id, name, attr, end){
-  d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
-    id + "/data/?num=180&end=" + parseInt(String(end).substring(0,10)), function(error, response){
+  var now = new Date().getTime()/1000
+  var url;
+  var diff = now - end
+
+  var plushalf = parseInt(end) + 1800
+  var plusfull = parseInt(end) + 3600
+
+  if(diff < 3600 && diff > 1800){
+    url = "/call?url=https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180&end=" + plushalf
+  }
+  else if(diff <= 1800){
+    url = "/call?url=https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180&end=" + end 
+  }
+  else if(diff > 3600){
+    url = "/call?url=https://wwws.appfirst.com/api/servers/" + id + "/data/?num=180&end=" + plusfull 
+  }
+  d3.json(url, function(error, response){
 
       stop_spin();
 
@@ -256,8 +271,8 @@ function vis4(id, name, attr, end){
         .attr("cy", function(d){return yscale(eval(test))})
         .attr("r", 7)
         .style("opacity", function(d){
-          var value = Math.abs(d.time - parseInt(String(new Date(end).getTime()).substring(0,10)))
-          if (value > 120 && value < 150){
+          var value = Math.abs(d.time - end)
+          if (value <60){
             return 1
           }
           else{
@@ -265,8 +280,8 @@ function vis4(id, name, attr, end){
           }
         })
         .style("fill", function(d){
-          var value = Math.abs(d.time - parseInt(String(new Date(end).getTime()).substring(0,10)))
-          if (value > 100 && value < 150){
+          var value = Math.abs(d.time - end)
+          if (value < 60){
             return "red"
           }
           else{
@@ -277,7 +292,7 @@ function vis4(id, name, attr, end){
           tooltip.text(attr + ": " + eval(test) +"\n\ndate: " + date(d.time))
             .transition()
             .duration(500)
-            .style("opacity", 1)
+            .style("opacity", 2)
             .style("left", (d3.event.pageX - 90) + "px")
             .style("top", (d3.event.pageY - 20) + "px");
         })
@@ -303,27 +318,77 @@ function vis4(id, name, attr, end){
 
 function vis5(id, name, attr, time){
   var processes = [];
+  var processJson = []
+  var j = 0
 
   //returns an array of all the process uids attributed to this server
   d3.json("/call?url=https://wwws.appfirst.com/api/servers/" + 
-    id + "/processes", function(error, response){
+    id + "/processes/", function(error, response){
       spin.stop();
-      console.log(response);
+      console.log(response)
       processes = array("uid", response);
-      console.log(processes)
 
-      console.log("porcupine")
-      console.log(processes.length)
-
+      //returns an array of the "data" objects of all of the above processes
       for( var i=0; i<processes.length; i++){
-        console.log("starfish")
         d3.json("/call?url=https://wwws.appfirst.com/api/processes/" + 
-          processes[i] + "/data", function(error, response){
-           console.log(response);
-         });
+          processes[i] + "/data?end=" + time, function(error, response){
+            processJson[j++] = response[0];
+           
+            console.log("this is j" + j)
+            console.log("process.len" + processes.length)
+
+            if(j == processes.length){
+              console.log(processJson);
+
+
+
+            //   var height = 230;
+            //   var width = 1300;
+            //   var margin = 1;
+
+            //   var arr = array("page_faults", processJson)
+            //   console.log("this is the array" + arr)
+            //   console.log("this is the min" + d3.min(arr))
+            //   console.log("this is the max" + d3.max(arr))
+
+            //   var tooltip = d3.select("body")
+            //   .append("div")
+            //   .attr("class", "tooltip")
+            //   .style("opacity", -1);
+
+            //   var xscale = d3.scale.linear()
+            //   .domain([d3.min(arr) +20, d3.max(arr)])
+            //   .range([0, 420]);
+
+            //   var svg = d3.select(".svg_container").insert("svg", "svg")
+            //   .attr("width", width)
+            //   .attr("height", height)
+            //   .attr("class", "chart");
+
+            //   svg.selectAll("rect")
+            //   .data(processJson)
+            //   .enter().append("rect")
+            //   .attr("y", function(d, i) { return i * 20; })
+            //   .attr("width", function(d){return xscale(d.page_faults)})
+            //   .attr("height", 20)
+            //   .on("mouseover", function(d){ 
+            //     tooltip.text(d.pag_faults)
+            //     .transition()
+            //     .duration(400)
+            //     .style("opacity", 1)
+            //     .style("left", (d3.event.pageX - 90) + "px")
+            //     .style("top", (d3.event.pageY - 20) + "px");
+            //   })
+            //   .on("mouseout", function(d){
+            //     tooltip.transition()
+            //     .duration(200)
+            //     .style("opacity", -1);
+            //   })
+            }
+        });
       }
-    });
-  }
+  });
+}
 
 function array(attr, data){
   var result = [];

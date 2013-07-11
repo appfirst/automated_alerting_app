@@ -51,6 +51,9 @@ class ApplicationController < ActionController::Base
       url = params[:url]
     end
 
+    logger.debug("THIS IS THE URL")
+    logger.debug(url)
+
     response = HTTParty.get(url, 
       :basic_auth => auth,
       :headers => {'Content-Type' => 'application/json'})
