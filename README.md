@@ -19,7 +19,7 @@ Two algoriths were used to detect these single point anomalies.
 Used to detect a single outlier in a univariate set of data that follows a normal distribution.
 
 Algorithm as per Wikipedia: 
-<img src='https://raw.github.com/appfirst/automated_alerting_app/master/public/algorithm.png' height='190' width='822'></img>
+<img src='https://raw.github.com/appfirst/automated_alerting_app/master/public/algorithm.png' height='64' width='274'></img>
 
 A time series is anomalous if the Z score is greater than the grubbs score. The Z score is the representation of how many standard deviations it is from the mean.
 
